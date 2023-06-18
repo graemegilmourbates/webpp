@@ -54,24 +54,11 @@ void WEBPP::Server::handler(int d_sck){
     }
 }
 
-void WEBPP::Server::responder(int dest_socket){
-    // Serve the HTML content
-    const char* response = "HTTP/1.1 200 OK\r\n"
-                                   "Content-Type: text/html\r\n"
-                                   "\r\n"
-                                   "<html><body>"
-                                   "<h1>Hello, world!</h1>"
-                                   "<p>Welcome to my website.</p>"
-                                   "</body></html>";
-    send(dest_socket, response, strlen(response), 0);
-    close(dest_socket);
-}
 
 void WEBPP::Server::start(){
     while(true){
         int d_sck = accepter();
         handler(d_sck);
-        responder(d_sck);
     }
 }
 

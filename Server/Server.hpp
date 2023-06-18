@@ -35,7 +35,6 @@ namespace WEBPP{
         int accepter();
         void handler(int dst_sck);
         void route();
-        void responder(int dest_socket);
         int max_clients;
         int client_sockets[];
     public:
