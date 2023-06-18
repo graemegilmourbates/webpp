@@ -19,6 +19,11 @@ int main(int argc, const char * argv[]) {
         responder.send_response(dest_sck, "<html><body><h1>Reached: /</h1></body></html>");
         return "/";
     });
+    t.add_route("/Hello",[](int dest_sck, std::unordered_map<std::string, std::string>)->std::string{
+        WEBPP::HTMLResponder responder;
+        responder.send_response(dest_sck, "<html><body><h1>Reached: /Hello</h1></body></html>");
+        return "/Hello";
+    });
     t.start();
     return 0;
 }

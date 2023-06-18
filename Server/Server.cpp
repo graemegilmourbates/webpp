@@ -47,6 +47,7 @@ void WEBPP::Server::handler(int d_sck){
     if(routes.find(route) == routes.end()){
         //handle route does not exist
         std::cout << "Route: " << route << " does not exist" << std::endl;
+        close(d_sck);
     }
     else {
         const std::function<std::string(int, std::unordered_map<std::string, std::string>&)>& route_handler = routes.at(route);
