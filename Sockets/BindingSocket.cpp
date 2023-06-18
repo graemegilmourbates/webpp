@@ -25,6 +25,7 @@ int WEBPP::BindingSocket::connect_to_network(int sck, sockaddr_in addr){
 
 void WEBPP::BindingSocket::start_listening(){
     listener = listen(get_sock(), backlog);
+    std::cout << "Listening on port: " << get_address().sin_port << std::endl;
 }
 
 int WEBPP::BindingSocket::get_back_log(){

@@ -4,7 +4,7 @@
 //
 //  Created by Graeme Bates on 6/12/23.
 //
-
+#define MAX_CONNECTIONS 30;
 #include "Server.hpp"
 #include <unordered_map>
 
@@ -15,6 +15,10 @@ WEBPP::Server::Server(
     socket = new BindingSocket(
         domain, type, protocol, port, interface, bcklg
     );
+    max_clients = MAX_CONNECTIONS;
+    for(int i=0; i<max_clients; i++){
+        client_sockets[i];
+    }
 }
 
 WEBPP::Server::~Server(){
@@ -45,9 +49,8 @@ void WEBPP::Server::handler(){
         std::cout << "Route: " << route << " does not exist" << std::endl;
     }
     else {
-        const std::pair<std::string, std::function<std::string(std::unordered_map<std::string, std::string>&)>>& route_handler = routes.at(route);
-        std::string response = route_handler.second(parsed_request);
-        std::string response_type = route_handler.first;
+        const std::function<std::string(std::unordered_map<std::string, std::string>&)>& route_handler = routes.at(route);
+        std::string response = route_handler(parsed_request);
     }
 }
 
@@ -77,7 +80,7 @@ WEBPP::BindingSocket * WEBPP::Server::get_socket(){
 }
 
 
-void WEBPP::Server::add_route(std::string route, std::pair<std::string, std::function<std::string(std::unordered_map<std::string, std::string>&)>> route_handler){
+void WEBPP::Server::add_route(std::string route, std::function<std::string(std::unordered_map<std::string, std::string>&)> route_handler){
     routes.insert({route, route_handler});
 }
 

@@ -9,6 +9,7 @@
 #define BindingSocket_hpp
 
 #include <stdio.h>
+#include <iostream>
 #include "MasterSocket.hpp"
 
 namespace WEBPP{
