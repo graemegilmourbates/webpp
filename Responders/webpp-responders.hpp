@@ -10,6 +10,5 @@
 
 #include <stdio.h>
 #include "Responder.hpp"
-#include "HtmlResponder.hpp"
 
 #endif /* webpp_responders_hpp */

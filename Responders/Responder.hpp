@@ -22,11 +22,14 @@ namespace WEBPP{
     class Responder{
     private:
         char* response_header;
-    public:
-        Responder();
+        // Destination
+        int dest_socket;
         void set_response_header(char* header);
-        std::string get_response_header();
-        void send_response(int dest_socket, char* response);
+        void send_response(char* response);
+    public:
+        Responder(int dest_socket);
+        void send_html(char* html);
+        void send_json(char* json);
     };
 }
 

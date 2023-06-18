@@ -47,11 +47,12 @@ void WEBPP::Server::handler(int d_sck){
     if(routes.find(route) == routes.end()){
         //handle route does not exist
         std::cout << "Route: " << route << " does not exist" << std::endl;
-        close(d_sck);
+        WEBPP::Responder responder(d_sck);
+        responder.send_html("<html><body><h1>404 NOT FOUND</h1></body></html>");
     }
     else {
-        const std::function<std::string(int, std::unordered_map<std::string, std::string>&)>& route_handler = routes.at(route);
-        std::string response = route_handler(d_sck, parsed_request);
+        const std::function<void(int, std::unordered_map<std::string, std::string>&)>& route_handler = routes.at(route);
+        route_handler(d_sck, parsed_request);
     }
 }
 
@@ -68,7 +69,7 @@ WEBPP::BindingSocket * WEBPP::Server::get_socket(){
 }
 
 
-void WEBPP::Server::add_route(std::string route, std::function<std::string(int dest_sck, std::unordered_map<std::string, std::string>&)> route_handler){
+void WEBPP::Server::add_route(std::string route, std::function<void(int dest_sck, std::unordered_map<std::string, std::string>&)> route_handler){
     routes.insert({route, route_handler});
 }
 
