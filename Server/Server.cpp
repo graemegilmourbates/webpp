@@ -39,7 +39,7 @@ int WEBPP::Server::accepter(){
     return client_socket;
 }
 
-void WEBPP::Server::handler(){
+void WEBPP::Server::handler(int d_sck){
     std::unordered_map<std::string, std::string> parsed_request = WEBPP::parse_http_request(buffer);
     //Split GET to recieve route
     std::string route = parsed_request["GET"].substr(0, parsed_request["GET"].find(" "));
@@ -49,8 +49,8 @@ void WEBPP::Server::handler(){
         std::cout << "Route: " << route << " does not exist" << std::endl;
     }
     else {
-        const std::function<std::string(std::unordered_map<std::string, std::string>&)>& route_handler = routes.at(route);
-        std::string response = route_handler(parsed_request);
+        const std::function<std::string(int, std::unordered_map<std::string, std::string>&)>& route_handler = routes.at(route);
+        std::string response = route_handler(d_sck, parsed_request);
     }
 }
 
@@ -70,7 +70,7 @@ void WEBPP::Server::responder(int dest_socket){
 void WEBPP::Server::start(){
     while(true){
         int d_sck = accepter();
-        handler();
+        handler(d_sck);
         responder(d_sck);
     }
 }
@@ -80,7 +80,7 @@ WEBPP::BindingSocket * WEBPP::Server::get_socket(){
 }
 
 
-void WEBPP::Server::add_route(std::string route, std::function<std::string(std::unordered_map<std::string, std::string>&)> route_handler){
+void WEBPP::Server::add_route(std::string route, std::function<std::string(int dest_sck, std::unordered_map<std::string, std::string>&)> route_handler){
     routes.insert({route, route_handler});
 }
 
