@@ -23,15 +23,16 @@
 #include "../Utilities/webpp-utilities.hpp"
 #include "../Responders/webpp-responders.hpp"
 
+// Define "route handler" function to make more readable
+using ROUTE_HANDLER = std::function<void(int dest_sck, std::unordered_map<std::string, std::string>&)>;
+
 namespace WEBPP{
     class Server{
     private:
         char buffer[30000];
         BindingSocket * socket;
-        // Routes hash table will accept a string representing the "/route" and
-        // a reference to a function, that will handle the route.
-        // The referenced route funtion must take in a reference to the request.
-        std::unordered_map<std::string, std::function<void(int dst_sck, std::unordered_map<std::string, std::string>&)>> routes;
+        // Key: "/route" Package: route_handler()
+        std::unordered_map<std::string, ROUTE_HANDLER&> routes;
         int accepter();
         void handler(int dst_sck);
         void route();
@@ -45,12 +46,7 @@ namespace WEBPP{
         ~Server();
         void start();
         BindingSocket * get_socket();
-        //This is a bit of a mess,
-        //Essentially, a route consists of a string "/route"
-        //A pair, thats first element is the reponse type(for now just a string html, json etc...) Will need to standardize with a enum or something
-        //and get a helper that will load the header
-        //The second element of the pair is the function that will do the route work.
-        void add_route(std::string, std::function<void(int dest_sck, std::unordered_map<std::string, std::string>&)>);
+        void add_route(std::string route, ROUTE_HANDLER);
     };
 }
 

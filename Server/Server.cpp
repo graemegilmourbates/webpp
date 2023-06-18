@@ -4,26 +4,33 @@
 //
 //  Created by Graeme Bates on 6/12/23.
 //
-#define MAX_CONNECTIONS 30;
+
 #include "Server.hpp"
 #include <unordered_map>
 
+/// Constructor
+/// - Parameters:
+///   - domain: Communication domain for socket
+///   - type: Specifies the type of socket to be created
+///   - protocol: specifying a protocol of 0 causes socket() to use an unspecified default protocol appropriate for the requested socket type.
+///   - port: Port number to bind
+///   - interface: Address to bind to
+///   - bcklg: Maximum rate new tcp connections can be accepted
 WEBPP::Server::Server(
     int domain, int type, int protocol,
     int port, u_long interface, int bcklg
 ){
+    /* Constructor, generates binding socket */
     socket = new BindingSocket(
         domain, type, protocol, port, interface, bcklg
     );
-    max_clients = MAX_CONNECTIONS;
-    for(int i=0; i<max_clients; i++){
-        client_sockets[i];
-    }
 }
 
 WEBPP::Server::~Server(){
+    // Not certain this is essential
     close(get_socket()->get_sock());
 }
+
 
 int WEBPP::Server::accepter(){
     sockaddr_in client_addr;
@@ -51,7 +58,7 @@ void WEBPP::Server::handler(int d_sck){
         responder.send_html("<html><body><h1>404 NOT FOUND</h1></body></html>");
     }
     else {
-        const std::function<void(int, std::unordered_map<std::string, std::string>&)>& route_handler = routes.at(route);
+        const ROUTE_HANDLER& route_handler = routes.at(route);
         route_handler(d_sck, parsed_request);
     }
 }
@@ -69,7 +76,7 @@ WEBPP::BindingSocket * WEBPP::Server::get_socket(){
 }
 
 
-void WEBPP::Server::add_route(std::string route, std::function<void(int dest_sck, std::unordered_map<std::string, std::string>&)> route_handler){
+void WEBPP::Server::add_route(std::string route, ROUTE_HANDLER route_handler){
     routes.insert({route, route_handler});
 }
 

@@ -7,6 +7,13 @@
 
 #include "MasterSocket.hpp"
 
+/// Constructor
+/// - Parameters:
+///   - domain: Communication domain for socket
+///   - type: Specifies the type of socket to be created
+///   - protocol: specifying a protocol of 0 causes socket() to use an unspecified default protocol appropriate for the requested socket type.
+///   - port: Port number to bind
+///   - interface: Address to bind to
 WEBPP::MasterSocket::MasterSocket(
     int domain, int type, int protocol,
     int port, u_long interface
@@ -20,6 +27,8 @@ WEBPP::MasterSocket::MasterSocket(
     check_connection(sock);
 }
 
+/// A quick error checker for sockets
+/// - Parameter sck: socket to check
 void WEBPP::MasterSocket::check_connection(int sck){
     if(sck < 0){
         perror("FAILED TO CONNECT");

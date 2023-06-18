@@ -24,7 +24,7 @@ namespace WEBPP{
             int type, // SOCK_STREAM, SOCK_DGRAM or SOCK_SEQPACKET (SOCK_STREAM is norm)
             int protocol, // Standard is 0, read https://docs.oracle.com/cd/E19620-01/805-4041/6j3r8iu2o/index.html
             int port, // Desired PORT ex 80
-            u_long interface, // ??
+            u_long interface, // Address to bind to.
             int backlog
         );
         int connect_to_network(int sck, sockaddr_in addr);
