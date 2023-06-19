@@ -50,16 +50,16 @@ void WEBPP::Server::handler(int d_sck){
     std::unordered_map<std::string, std::string> parsed_request = WEBPP::parse_http_request(buffer);
     //Split GET to recieve route
     std::string route = parsed_request["GET"].substr(0, parsed_request["GET"].find(" "));
+    WEBPP::Responder responder(d_sck);
     //run route handler
     if(routes.find(route) == routes.end()){
         //handle route does not exist
         std::cout << "Route: " << route << " does not exist" << std::endl;
-        WEBPP::Responder responder(d_sck);
         responder.send_html("<html><body><h1>404 NOT FOUND</h1></body></html>");
     }
     else {
         const ROUTE_HANDLER& route_handler = routes.at(route);
-        route_handler(d_sck, parsed_request);
+        route_handler(responder, parsed_request);
     }
 }
 

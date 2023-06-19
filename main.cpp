@@ -14,19 +14,16 @@
 using REQUEST = std::unordered_map<std::string, std::string>;
 
 int main(int argc, const char * argv[]) {
-    // insert code here...
+    
     WEBPP::Server t(AF_INET, SOCK_STREAM, 0, 80, INADDR_ANY, 10);
-    t.add_route("/",[](int dest_sck, REQUEST req)->void{
-        WEBPP::Responder responder(dest_sck);
-        responder.send_html("<html><body><h1>Reached: /</h1></body></html>");
+    t.add_route("/",[](WEBPP::Responder responder, REQUEST req)->void{
+        responder.send_html("<html><body><h1>Welcome to WEBPP</h1><p>This is a c++ backend framework</p></body></html>");
     });
-    t.add_route("/Hello",[](int dest_sck, REQUEST req)->void{
-        WEBPP::Responder responder(dest_sck);
-        responder.send_html("<html><body><h1>Reached: /Hello</h1></body></html>");
+    t.add_route("/Hello",[](WEBPP::Responder responder, REQUEST req)->void{
+        responder.send_html("<html><body><h1>Hello World</h1></body></html>");
     });
-    t.add_route("/favicon.ico",[](int dest_sck, REQUEST req)->void{
-        WEBPP::Responder responder(dest_sck);
-        responder.send_image("../favicon.ico");
+    t.add_route("/favicon.ico",[](WEBPP::Responder responder, REQUEST req)->void{
+        responder.send_image("/Users/gb/static/favicon.ico");
     });
     t.start();
     return 0;

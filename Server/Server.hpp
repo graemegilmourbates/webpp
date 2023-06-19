@@ -24,7 +24,7 @@
 #include "../Responders/webpp-responders.hpp"
 
 // Define "route handler" function to make more readable
-using ROUTE_HANDLER = std::function<void(int dest_sck, std::unordered_map<std::string, std::string>&)>;
+using ROUTE_HANDLER = std::function<void(WEBPP::Responder& responder, std::unordered_map<std::string, std::string>& request)>;
 
 namespace WEBPP{
     class Server{

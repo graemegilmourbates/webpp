@@ -17,6 +17,8 @@
 #include <unordered_map>
 #include <sys/time.h>
 #include <fstream>
+#include <sstream>
+#include <filesystem>
 
 namespace WEBPP{
 
@@ -27,13 +29,13 @@ namespace WEBPP{
         int dest_socket;
         void set_response_header(char* header);
         void send_response(char* response);
-        void send_file(char* file_path);
+        void send_file(std::string file_path, std::string file_type);
     public:
         Responder(int dest_socket);
         void send_html(char* html);
         void send_json(char* json);
         /// Grabs file type from path
-        void send_image(char* file_path);
+        void send_image(std::string file_path);
         void send_audio(char* file_path);
         void send_video(char* file_path);
     };
