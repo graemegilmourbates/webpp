@@ -43,7 +43,6 @@ namespace WEBPP{
         
         void init_ssl();
         
-        
         int accept_client();
         void attach_ssl_to_client_sock();
         void handler(int client_sock);

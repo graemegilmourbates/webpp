@@ -23,7 +23,7 @@ int main(int argc, const char * argv[]) {
         responder.send_html("<html><body><h1>Hello World</h1></body></html>");
     });
     t.add_route("/favicon.ico",[](WEBPP::Responder responder, REQUEST req)->void{
-        responder.send_image("/Users/gb/static/favicon.ico");
+        responder.send_image("Static/favicon.ico");
     });
     t.add_route("/json", [](WEBPP::Responder responder, REQUEST req)->void{
         responder.send_json("{'array':[1,2,3], 'key':'value'}");

@@ -36,10 +36,10 @@ namespace WEBPP{
         Responder(int dest_socket);
         void send_html(char* html);
         void send_json(char* json);
-        /// Grabs file type from path
+        /// Grabs file type from path file extension.
         void send_image(std::string file_path);
-        void send_audio(char* file_path);
-        void send_video(char* file_path);
+        void send_audio(std::string file_path);
+        void send_video(std::string file_path);
     };
 }
 
