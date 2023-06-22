@@ -19,9 +19,9 @@ WEBPP::MasterSocket::MasterSocket(
     int port, u_long interface
   ){
     // Define the address
-    address.sin_family = domain;
-    address.sin_port = htons(port);
-    address.sin_addr.s_addr = htonl(interface);
+    address.sin6_family = domain;
+    address.sin6_addr = in6addr_any;
+    address.sin6_port = htons(port);
     // Create socket
     sock=socket(domain, type, protocol);
     check_connection(sock);
@@ -36,7 +36,7 @@ void WEBPP::MasterSocket::check_connection(int sck){
     }
 }
 
-struct sockaddr_in WEBPP::MasterSocket::get_address(){
+struct sockaddr_in6 WEBPP::MasterSocket::get_address(){
     return address;
 }
 

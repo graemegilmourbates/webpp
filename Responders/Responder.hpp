@@ -4,6 +4,8 @@
 //
 //  Created by Graeme Bates on 6/18/23.
 //
+//  This is specifically an http responder... assume all reponses are for http clients.
+//
 
 #ifndef Responder_hpp
 #define Responder_hpp

@@ -4,6 +4,8 @@
 //
 //  Created by Graeme Bates on 6/18/23.
 //
+//  This is specifically an http responder... assume all reponses are for http clients.
+//
 
 #include "Responder.hpp"
 

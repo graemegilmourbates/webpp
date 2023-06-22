@@ -18,14 +18,14 @@ WEBPP::BindingSocket::BindingSocket(
     check_connection(get_listener());
 }
 
-int WEBPP::BindingSocket::connect_to_network(int sck, sockaddr_in addr){
+int WEBPP::BindingSocket::connect_to_network(int sck, sockaddr_in6 addr){
     // cast address
     return bind(sck, (struct sockaddr *)&addr, sizeof(addr));
 }
 
 void WEBPP::BindingSocket::start_listening(){
     listener = listen(get_sock(), backlog);
-    std::cout << "Listening on port: " << get_address().sin_port << std::endl;
+    std::cout << "Listening on port: " << get_address().sin6_port << std::endl;
 }
 
 int WEBPP::BindingSocket::get_back_log(){

@@ -27,7 +27,7 @@ namespace WEBPP{
             u_long interface, // Address to bind to.
             int backlog
         );
-        int connect_to_network(int sck, sockaddr_in addr);
+        int connect_to_network(int sck, sockaddr_in6 addr);
         void start_listening();
         int get_back_log();
         int get_listener();

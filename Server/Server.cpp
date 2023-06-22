@@ -6,7 +6,6 @@
 //
 
 #include "Server.hpp"
-#include <unordered_map>
 
 /// Constructor
 /// - Parameters:
@@ -31,9 +30,12 @@ WEBPP::Server::~Server(){
     close(get_socket()->get_sock());
 }
 
+void WEBPP::Server::init_ssl(){
+    std::cout << "Initializing SSL..." << std::endl;
+}
 
-int WEBPP::Server::accepter(){
-    sockaddr_in client_addr;
+int WEBPP::Server::accept_client(){
+    sockaddr_in6 client_addr;
     socklen_t client_addr_length;
     int client_socket = accept(
         get_socket()->get_sock(), (struct sockaddr *)&client_addr,
@@ -42,15 +44,16 @@ int WEBPP::Server::accepter(){
     if(client_socket < 0){
         std::cout << "Failed to accept client connection" << std::endl;
     }
-    read(client_socket, buffer, 30000);
     return client_socket;
 }
 
-void WEBPP::Server::handler(int d_sck){
+void WEBPP::Server::handler(int client_sock){
+    char buffer[1024];
+    read(client_sock, buffer, sizeof(buffer));
     std::unordered_map<std::string, std::string> parsed_request = WEBPP::parse_http_request(buffer);
     //Split GET to recieve route
     std::string route = parsed_request["GET"].substr(0, parsed_request["GET"].find(" "));
-    WEBPP::Responder responder(d_sck);
+    WEBPP::Responder responder(client_sock);
     //run route handler
     if(routes.find(route) == routes.end()){
         //handle route does not exist
@@ -63,11 +66,18 @@ void WEBPP::Server::handler(int d_sck){
     }
 }
 
+void WEBPP::Server::attach_ssl_to_client_sock(){
+    std::cout << "Attaching SSL to client sock" << std::endl;
+}
+
 
 void WEBPP::Server::start(){
+    std::cout << "Starting Server..." << std::endl;
+    init_ssl();
+    std::vector<std::thread> client_threads;
     while(true){
-        int d_sck = accepter();
-        handler(d_sck);
+        int client_sock = accept_client();
+        client_threads.push_back(std::thread(&Server::handler, this, client_sock));
     }
 }
 
@@ -77,6 +87,7 @@ WEBPP::BindingSocket * WEBPP::Server::get_socket(){
 
 
 void WEBPP::Server::add_route(std::string route, ROUTE_HANDLER route_handler){
+    std::cout << "Adding route: " << route << std::endl;
     routes.insert({route, route_handler});
 }
 

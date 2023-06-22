@@ -18,10 +18,17 @@
 #include <string.h>
 #include <unordered_map>
 #include <sys/time.h>
+#include <mbedtls/net_sockets.h>
+#include <mbedtls/ssl.h>
+#include <mbedtls/entropy.h>
+#include <mbedtls/ctr_drbg.h>
+#include <mbedtls/debug.h>
+#include <mbedtls/error.h>
+#include <thread>
 
 #include "../Sockets/webpp-sockets.hpp"
-#include "../Utilities/webpp-utilities.hpp"
 #include "../Responders/webpp-responders.hpp"
+#include "../Utilities/webpp-utilities.hpp"
 
 // Define "route handler" function to make more readable
 using ROUTE_HANDLER = std::function<void(WEBPP::Responder& responder, std::unordered_map<std::string, std::string>& request)>;
@@ -29,15 +36,19 @@ using ROUTE_HANDLER = std::function<void(WEBPP::Responder& responder, std::unord
 namespace WEBPP{
     class Server{
     private:
-        char buffer[30000];
         BindingSocket * socket;
+        mbedtls_ssl_context ssl;
         // Key: "/route" Package: route_handler()
         std::unordered_map<std::string, ROUTE_HANDLER&> routes;
-        int accepter();
-        void handler(int dst_sck);
-        void route();
+        
+        void init_ssl();
+        
+        
+        int accept_client();
+        void attach_ssl_to_client_sock();
+        void handler(int client_sock);
         int max_clients;
-        int client_sockets[];
+        
     public:
         Server(
             int domain, int service, int protocol,

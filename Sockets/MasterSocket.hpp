@@ -16,7 +16,7 @@
 namespace WEBPP{
     class MasterSocket{
     private:
-        struct sockaddr_in address;
+        struct sockaddr_in6 address;
         int sock;
     public:
         // Constructor
@@ -29,10 +29,10 @@ namespace WEBPP{
         );
         // Virutal function will need to be fufilled by child class
         // Connect to network will differ depending on the socket
-        virtual int connect_to_network(int sck, struct sockaddr_in addr) = 0;
+        virtual int connect_to_network(int sck, struct sockaddr_in6 addr) = 0;
         // Verify that socket connected
         void check_connection(int sck);
-        struct sockaddr_in get_address();
+        struct sockaddr_in6 get_address();
         int get_sock();
     };
 }
