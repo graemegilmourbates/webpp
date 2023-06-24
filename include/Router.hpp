@@ -2,6 +2,7 @@
 #define ROUTER_HPP
 
 #include <string>
+#include <iostream>
 #include <unordered_map>
 
 #include "Responder.hpp"
@@ -16,10 +17,10 @@ using REQUEST = std::unordered_map<std::string, std::string>;
 namespace WEBPP{
   class Router{
   private:
-    std::unordered_map<std::string, ROUTE_HANDLER&> routes;
+    std::unordered_map<std::string, const ROUTE_HANDLER&> routes;
   public:
     Router();
-    void add(std::string t_route, ROUTE_HANDLER &t_handler);
+    void add(std::string t_route, const ROUTE_HANDLER &t_handler);
     void handle_request(int t_client, REQUEST &parsed_request);
   };
 }

@@ -11,13 +11,15 @@
 #include "Router.hpp"
 #include "HttpHelpers.hpp"
 
+using ROUTE_HANDLER = std::function<void(WEBPP::Responder& responder, std::unordered_map<std::string, std::string>& request)>;
+
 namespace WEBPP{
   class Server{
   private:
     BindingSocket *server_socket;
     int accept_client();
     void handle_client(int t_client);
-    Router *router;
+    std::unordered_map<std::string, ROUTE_HANDLER&> routes;
   public:
     Server(
       int domain, // AF_UNIX for local communication, AF_INET for internet domain
@@ -27,7 +29,9 @@ namespace WEBPP{
       u_long interface, // Address to bind to.
       int backlog
     );
+    Router *router;
     void start();
+    void add_route(std::string route, ROUTE_HANDLER);
     // ACCESS FUNCTIONS
     BindingSocket *get_socket();
   };

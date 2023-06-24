@@ -18,6 +18,7 @@ WEBPP::BindingSocket *WEBPP::Server::get_socket(){
 }
 
 int WEBPP::Server::accept_client(){
+  std::cout << "Accepting New Client" << std::endl;
   struct sockaddr_in6 client_address;
   socklen_t client_address_length;
   int client_socket = accept(
@@ -29,11 +30,24 @@ int WEBPP::Server::accept_client(){
 }
 
 void WEBPP::Server::handle_client(int t_client){
+  std::cout << "Handling Client" << std::endl;
   char buffer[1024];
   read(t_client, buffer, sizeof(buffer));
   std::unordered_map<std::string, std::string> parsed_request;
   parsed_request = WEBPP::parse_http_request(buffer);
-  router->handle_request(t_client, parsed_request);
+  std::string route = parsed_request["GET"].substr(0, parsed_request["GET"].find(" "));
+  // router->handle_request(t_client, parsed_request);
+  WEBPP::Responder responder(t_client);
+  //run route handler
+  if(routes.find(route) == routes.end()){
+    //handle route does not exist
+    std::cout << "Route: " << route << " does not exist" << std::endl;
+    responder.send_html("<html><body><h1>404 NOT FOUND</h1></body></html>");
+  }
+  else {
+    const ROUTE_HANDLER& route_handler = routes.at(route);
+    route_handler(responder, parsed_request);
+  }
 }
 
 void WEBPP::Server::start(){
@@ -45,4 +59,9 @@ void WEBPP::Server::start(){
       &Server::handle_client, this, client_socket
     ));
   }
+}
+
+void WEBPP::Server::add_route(std::string route, ROUTE_HANDLER route_handler){
+    std::cout << "Adding route: " << route << std::endl;
+    routes.insert({route, route_handler});
 }
