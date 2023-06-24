@@ -1,4 +1,4 @@
-#include "Sockets/BaseSocket.hpp"
+#include "BaseSocket.hpp"
 
 WEBPP::BaseSocket::BaseSocket(
   int domain,  // AF_UNIX for local, AF_INET for internet domain

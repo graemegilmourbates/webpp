@@ -1,22 +1,42 @@
+# Define Project and Required versions
 cmake_minimum_required(VERSION 3.26)
-
 project(WEBPP VERSION 0.0.1 DESCRIPTION "a lightweight c++ backend")
 
-if (NOT CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
-    message(STATUS "This project has a top-level one called [${CMAKE_PROJECT_NAME}]")
-else()
-    message(STATUS "This project is a top-level one")
-endif()
-
+# Define included directories
 include(GNUInstallDirs)
 include_directories(include)
+include_directories(src)
 
-add_library(${PROJECT_NAME} SHARED src/webpp.cpp)
+# Set Source Files, Header Files and Required libs
+set(SOURCE_FILES
+  src/BaseSocket.cpp
+  src/BindingSocket.cpp
+  src/Responder.cpp
+  src/Router.cpp
+  src/Server.cpp
+  src/HttpHelpers.cpp
+)
+
+set(HEADER_FILES
+  include/BaseSocket.hpp
+  include/BindingSocket.hpp
+  include/Responder.hpp
+  include/Router.hpp
+  include/Server.hpp
+  include/HttpHelpers.hpp
+	include/webpp.hpp
+)
+
+set(REQUIRED_LIBRARIES
+  ...
+)
+
+add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES})
 
 target_sources(${PROJECT_NAME}
   PRIVATE
-    src/Sockets/BaseSocket.cpp
-    src/Sockets/BindingSocket.cpp
+    src/BaseSocket.cpp
+    src/BindingSocket.cpp
     src/Responder.cpp
     src/Router.cpp
     src/Server.cpp
@@ -24,10 +44,14 @@ target_sources(${PROJECT_NAME}
 )
 
 set_target_properties(
-  ${PROJECT_NAME} PROPERTIES
-  VERSION ${PROJECT_VERSION}
+	${PROJECT_NAME}
+PROPERTIES
+	VERSION ${PROJECT_VERSION}
   SOVERSION 0
-  PUBLIC_HEADER include/webpp.hpp
+  PUBLIC_HEADER "${HEADER_FILES}"
+	ARCHIVE_OUTPUT_DIRECTORY "lib"
+	LIBRARY_OUTPUT_DIRECTORY "lib"
+	OUTPUT_NAME ${PROJECT_NAME}
 )
 
 configure_file(WEBPP.pc.in WEBPP.pc @ONLY)
@@ -39,8 +63,9 @@ set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 17)
 
 install(TARGETS ${PROJECT_NAME}
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+  PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}
 )
 
 install(FILES ${CMAKE_BINARY_DIR}/webpp.pc
-    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/pkgconfig)
+  DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/pkgconfig
+)
