@@ -1,13 +1,8 @@
-//
-//  httpHelpers.cpp
-//  WEBPP
-//
-//  Created by Graeme Bates on 6/13/23.
-//
-
 #include "HttpHelpers.hpp"
 
-std::unordered_map<std::string, std::string> WEBPP::parse_http_request(char http_request[30000]){
+std::unordered_map<std::string, std::string> WEBPP::parse_http_request(
+  char *http_request
+){
     std::string line;
     std::istringstream request(http_request);
     //Our map
@@ -21,4 +16,3 @@ std::unordered_map<std::string, std::string> WEBPP::parse_http_request(char http
     }
     return parsed_request;
 }
-
