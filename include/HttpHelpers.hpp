@@ -8,6 +8,7 @@
 #include <utility>
 #include <unordered_map>
 #include <sstream>
+#include <iostream>
 
 namespace WEBPP{
   std::unordered_map<std::string, std::string> parse_http_request(

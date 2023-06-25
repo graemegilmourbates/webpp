@@ -1,74 +1,145 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Web Plus Plus Demo</title>
-  <!-- Import Bootstrap CSS via URL -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-  <style>
-    body {
-      background-color: #f2f2f2;
-    }
+<title>Web Plus Plus Demo</title>
+<!-- Import Bootstrap CSS via URL -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<style>
+body {
+  background-color: #f2f2f2;
+}
 
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 40px;
-      background-color: #ffffff;
-      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-      border-radius: 10px;
-      margin-top: 50px;
-    }
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px;
+  background-color: #ffffff;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  margin-top: 50px;
+}
 
-    h1 {
-      font-size: 32px;
-      color: #333333;
-      margin-bottom: 20px;
-      text-align: center;
-    }
+h1 {
+  font-size: 32px;
+  color: #333333;
+  margin-bottom: 20px;
+  text-align: center;
+}
 
-    .lead {
-      font-size: 20px;
-      color: #666666;
-      margin-bottom: 30px;
-      text-align: center;
-    }
+.lead {
+  font-size: 20px;
+  color: #666666;
+  margin-bottom: 30px;
+  text-align: center;
+}
 
-    ul {
-      list-style-type: disc;
-      margin-left: 20px;
-      margin-bottom: 30px;
-    }
+ul {
+  list-style-type: disc;
+  margin-left: 20px;
+  margin-bottom: 30px;
+}
 
-    .btn {
-      display: inline-block;
-      padding: 12px 24px;
-      background-color: #007bff;
-      color: #ffffff;
-      text-decoration: none;
-      border-radius: 4px;
-      transition: background-color 0.3s ease;
-    }
+.btn {
+  display: inline-block;
+  padding: 12px 24px;
+  background-color: #007bff;
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
 
-    .btn:hover {
-      background-color: #0056b3;
-    }
-  </style>
+.btn:hover {
+  background-color: #0056b3;
+}
+
+.json-pair {
+margin-bottom: 10px;
+padding: 10px;
+background-color: #f9f9f9;
+border: 1px solid #dddddd;
+border-radius: 4px;
+}
+
+.json-key {
+font-weight: bold;
+}
+
+#json-data {
+  margin-top: 40px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #dddddd;
+  border-radius: 4px;
+  white-space: pre-wrap;
+}
+</style>
 </head>
 <body>
-  <div class="container">
-    <h1>Welcome to Web Plus Plus</h1>
-    <p class="lead">A lightweight C++ backend framework for web development.</p>
-    <p>So far features and capabilities of Web Plus Plus:</p>
-    <ul>
-      <li>Establish non ssl connections with clients</li>
-      <li>Send files in buffer</li>
-    </ul>
-    <div class="text-center">
-      <a href="https://github.com/graemegilmourbates/webpp" class="btn btn-primary">Checkout Source on GIT</a>
-    </div>
-  </div>
+<div class="container">
+<div class="container">
+  <h1>Welcome to Web Plus Plus</h1>
+<p class="lead">A lightweight C++ backend framework for web development.</p>
+<p>Still working on the features of Web Plus Plus:</p>
+<ul>
+<li>But it handled all this</li>
+<li>Does not yet support ssl</li>
+<li>Will be continuing to add features</li>
+</ul>
+<div class="text-center">
+<a href="https://github.com/graemegilmourbates/webpp" class="btn btn-primary">Check out the GIT</a>
+</div>
+</div>
+<div class="container">
+  <p class="lead">Below is example json data recieved from the server at "/json"</p>
+</div>
+<div id="json-data"></div>
+</div>
 
-  <!-- Import Bootstrap JS via URL (required for certain components) -->
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<!-- Import Bootstrap JS via URL (required for certain components) -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<!-- JavaScript code for API call -->
+<script>
+// Perform the API call when the page finishes loading
+document.addEventListener("DOMContentLoaded", function() {
+  // Create a new XMLHttpRequest object
+  var xhr = new XMLHttpRequest();
+
+  // Set up the request
+  xhr.open("GET", "http://127.0.0.1/json", true);
+
+  // Define the callback function for when the request is complete
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      // Parse the JSON response
+      var jsonData = JSON.parse(xhr.responseText);
+
+      // Display the received JSON data on the page
+      var jsonDataDiv = document.getElementById("json-data");
+      for (var key in jsonData) {
+        if (jsonData.hasOwnProperty(key)) {
+          var jsonPairDiv = document.createElement("div");
+          jsonPairDiv.classList.add("json-pair");
+
+          var keyDiv = document.createElement("div");
+          keyDiv.classList.add("json-key");
+          keyDiv.textContent = key;
+
+          var valueDiv = document.createElement("div");
+          valueDiv.textContent = JSON.stringify(jsonData[key]);
+
+          jsonPairDiv.appendChild(keyDiv);
+          jsonPairDiv.appendChild(valueDiv);
+          jsonDataDiv.appendChild(jsonPairDiv);
+        }
+      }
+    }
+  };
+
+  // Send the request
+  xhr.send();
+});
+</script>
 </body>
 </html>

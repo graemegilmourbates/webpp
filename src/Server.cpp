@@ -33,7 +33,7 @@ void WEBPP::Server::handle_client(int t_client){
   read(t_client, buffer, sizeof(buffer));
   std::unordered_map<std::string, std::string> parsed_request;
   parsed_request = WEBPP::parse_http_request(buffer);
-  std::string route = parsed_request["GET"].substr(0, parsed_request["GET"].find(" "));
+  std::string route = parsed_request["route"];
   // router->handle_request(t_client, parsed_request);
   WEBPP::Responder responder(t_client);
   //run route handler
