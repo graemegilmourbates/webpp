@@ -7,11 +7,16 @@
 #include <unordered_map>
 #include <thread>
 
+#include "Responder.hpp"
 #include "BindingSocket.hpp"
-#include "Router.hpp"
 #include "HttpHelpers.hpp"
 
-using ROUTE_HANDLER = std::function<void(WEBPP::Responder& responder, std::unordered_map<std::string, std::string>& request)>;
+using ROUTE_HANDLER = std::function<void(
+  WEBPP::Responder& responder,
+  std::unordered_map<std::string, std::string>& request
+)>;
+
+using REQUEST = std::unordered_map<std::string, std::string>;
 
 namespace WEBPP{
   class Server{
@@ -29,7 +34,6 @@ namespace WEBPP{
       u_long interface, // Address to bind to.
       int backlog
     );
-    Router *router;
     void start();
     void add_route(std::string route, ROUTE_HANDLER);
     // ACCESS FUNCTIONS

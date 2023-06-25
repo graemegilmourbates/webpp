@@ -12,7 +12,6 @@ set(SOURCE_FILES
   src/BaseSocket.cpp
   src/BindingSocket.cpp
   src/Responder.cpp
-  src/Router.cpp
   src/Server.cpp
   src/HttpHelpers.cpp
 )
@@ -21,7 +20,6 @@ set(HEADER_FILES
   include/BaseSocket.hpp
   include/BindingSocket.hpp
   include/Responder.hpp
-  include/Router.hpp
   include/Server.hpp
   include/HttpHelpers.hpp
 	include/webpp.hpp
@@ -38,7 +36,6 @@ target_sources(${PROJECT_NAME}
     src/BaseSocket.cpp
     src/BindingSocket.cpp
     src/Responder.cpp
-    src/Router.cpp
     src/Server.cpp
     src/HttpHelpers.cpp
 )

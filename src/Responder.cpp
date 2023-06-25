@@ -8,7 +8,7 @@ void WEBPP::Responder::set_response_header(char *t_header){
   response_header = t_header;
 }
 
-void WEBPP::Responder::send_response(char *t_response){
+void WEBPP::Responder::send_response(const char *t_response){
   //Get total length of response
   char *outflow = new char[strlen(response_header) + strlen(t_response) + 2];
   outflow = strcpy(outflow, response_header);
@@ -69,23 +69,23 @@ void WEBPP::Responder::send_file(
   close(client);
 }
 
-void WEBPP::Responder::send_html(char* html){
+void WEBPP::Responder::send_html(const char *t_html){
     set_response_header("HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n");
-    send_response(html);
+    send_response(t_html);
 }
 
-void WEBPP::Responder::send_json(char* json){
+void WEBPP::Responder::send_json(const char *t_json){
     set_response_header("HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n");
-    send_response(json);
+    send_response(t_json);
 }
 
 void WEBPP::Responder::send_image(std::string t_image_path){
-    // Get image type:
     int index;
-    std::string file_p, file_type, content_type;
+    std::string file_type, content_type;
     index = t_image_path.find_last_of(".");
-    file_type = file_p.substr(index+1);
+    file_type = t_image_path.substr(index+1);
     if(file_type == "ico") content_type = "image/x-icon";
     else if (file_type == "jpeg" || file_type == "jpg") content_type = "image/jpeg";
+    else if (file_type == "html") content_type = "text/html";
     send_file(t_image_path, content_type);
 }

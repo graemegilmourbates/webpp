@@ -18,7 +18,6 @@ WEBPP::BindingSocket *WEBPP::Server::get_socket(){
 }
 
 int WEBPP::Server::accept_client(){
-  std::cout << "Accepting New Client" << std::endl;
   struct sockaddr_in6 client_address;
   socklen_t client_address_length;
   int client_socket = accept(
@@ -30,7 +29,6 @@ int WEBPP::Server::accept_client(){
 }
 
 void WEBPP::Server::handle_client(int t_client){
-  std::cout << "Handling Client" << std::endl;
   char buffer[1024];
   read(t_client, buffer, sizeof(buffer));
   std::unordered_map<std::string, std::string> parsed_request;
@@ -51,7 +49,6 @@ void WEBPP::Server::handle_client(int t_client){
 }
 
 void WEBPP::Server::start(){
-  std::cout << "Starting Server..." << std::endl;
   std::vector<std::thread> client_threads;
   while(true){
     int client_socket = accept_client();
@@ -62,6 +59,5 @@ void WEBPP::Server::start(){
 }
 
 void WEBPP::Server::add_route(std::string route, ROUTE_HANDLER route_handler){
-    std::cout << "Adding route: " << route << std::endl;
     routes.insert({route, route_handler});
 }
