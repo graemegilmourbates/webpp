@@ -11,6 +11,8 @@ WEBPP::Server::Server(
   server_socket = new BindingSocket(
     domain, type, protocol, port, interface, backlog
   );
+  ctx = create_sll_context();
+  configure_ssl_context(ctx);
 }
 
 WEBPP::BindingSocket *WEBPP::Server::get_socket(){
@@ -29,8 +31,23 @@ int WEBPP::Server::accept_client(){
 }
 
 void WEBPP::Server::handle_client(int t_client){
-  char buffer[1024];
-  read(t_client, buffer, sizeof(buffer));
+  //Adding in ssl here
+  SSL *ssl;
+  ssl = SSL_new(ctx);
+  SSL_set_fd(ssl, t_client);
+  if (SSL_accept(ssl) <= 0) {
+    perror("SSL FAILED TO ACCEPT");
+    std::cout << ERR_error_string(ERR_get_error(), NULL) << std::endl; 
+    shut_down_ssl(ssl);
+    exit(EXIT_FAILURE);
+  }
+  // SSL_write(ssl, reply, strlen(reply));
+  char *buffer;
+  size_t *readbytes;
+  SSL_read_all(ssl, buffer, 1024);
+  // int SSL_read(ssl, buffer, 1024);
+  std::cout << "Successful ssl read..." << std::endl;
+  // read(t_client, buffer, sizeof(buffer));
   std::unordered_map<std::string, std::string> parsed_request;
   parsed_request = WEBPP::parse_http_request(buffer);
   std::string route = parsed_request["route"];

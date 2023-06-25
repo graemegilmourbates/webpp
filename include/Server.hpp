@@ -6,6 +6,7 @@
 #include <string>
 #include <unordered_map>
 #include <thread>
+#include <openssl/ssl.h>
 
 #include "Responder.hpp"
 #include "BindingSocket.hpp"
@@ -25,6 +26,7 @@ namespace WEBPP{
     int accept_client();
     void handle_client(int t_client);
     std::unordered_map<std::string, ROUTE_HANDLER&> routes;
+    SSL_CTX *ctx;
   public:
     Server(
       int domain, // AF_UNIX for local communication, AF_INET for internet domain

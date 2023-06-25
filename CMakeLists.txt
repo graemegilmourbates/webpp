@@ -5,7 +5,7 @@ project(WEBPP VERSION 0.0.1 DESCRIPTION "a lightweight c++ backend")
 # Define included directories
 include(GNUInstallDirs)
 include_directories(include)
-include_directories(src)
+include_directories(src)# Set dependencies
 
 # Set Source Files, Header Files and Required libs
 set(SOURCE_FILES
@@ -22,23 +22,23 @@ set(HEADER_FILES
   include/Responder.hpp
   include/Server.hpp
   include/HttpHelpers.hpp
-	include/webpp.hpp
 )
 
 set(REQUIRED_LIBRARIES
-  ...
+  openssl
 )
 
-add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES})
+add_library(${PROJECT_NAME}
+  SHARED
+    ${SOURCE_FILES}
+)
 
 target_sources(${PROJECT_NAME}
   PRIVATE
-    src/BaseSocket.cpp
-    src/BindingSocket.cpp
-    src/Responder.cpp
-    src/Server.cpp
-    src/HttpHelpers.cpp
+    ${SOURCE_FILES}
 )
+
+find_package(OpenSSL REQUIRED)
 
 set_target_properties(
 	${PROJECT_NAME}
@@ -55,6 +55,11 @@ configure_file(WEBPP.pc.in WEBPP.pc @ONLY)
 
 target_include_directories(${PROJECT_NAME} PRIVATE include)
 target_include_directories(${PROJECT_NAME} PRIVATE src)
+
+# Link OPENSSL
+target_link_libraries(${PROJECT_NAME} PRIVATE OpenSSL::SSL)
+target_link_libraries(${PROJECT_NAME} PRIVATE OpenSSL::Crypto)
+target_link_libraries(${PROJECT_NAME} PRIVATE OpenSSL::applink)
 
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 17)
 
