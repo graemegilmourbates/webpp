@@ -1,5 +1,17 @@
 #include "HttpHelpers.hpp"
 
+/* HTTP Requst format
+A Request-line
+Request-Line = Method SP Request-URI SP HTTP-Version CRLF
+
+Zero or more header (General|Request|Entity) fields followed by CRLF
+
+An empty line (i.e., a line with nothing preceding the CRLF)
+indicating the end of the header fields
+
+Optionally a message-body
+*/
+
 std::unordered_map<std::string, std::string> WEBPP::parse_http_request(
   char *http_request
 ){
