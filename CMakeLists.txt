@@ -14,6 +14,7 @@ set(SOURCE_FILES
   src/Responder.cpp
   src/Server.cpp
   src/HttpHelpers.cpp
+  src/Router.cpp
 )
 
 set(HEADER_FILES
@@ -23,6 +24,7 @@ set(HEADER_FILES
   include/Server.hpp
   include/HttpHelpers.hpp
 	include/webpp.hpp
+  include/Router.hpp
 )
 
 set(REQUIRED_LIBRARIES
