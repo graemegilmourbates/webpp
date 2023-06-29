@@ -29,7 +29,7 @@ std::unordered_map<std::string, std::string> WEBPP::parse_http_request(
     parsed_request.insert({"URI", uri});
     parsed_request.insert({"Version", http_version});
     while(std::getline(request, line)){
-        if(line.length() > 1){
+        if(line.length() > 1 && line != "\n"){
             std::string first = line.substr(0, line.find(" "));
             std::string second = line.substr(line.find(" ")+1, line.length()-1);
             parsed_request.insert({{first, second}});
