@@ -41,12 +41,11 @@ namespace WEBPP{
 
   class Router{
   private:
-    std::unordered_map<WEBPP::Route, ROUTE_HANDLER&> routes;
+    std::vector<std::pair<Route, ROUTE_HANDLER&>> routes;
   public:
-    Router();
-    void add_route(std::string t_route, ROUTE_HANDLER);
-    void add_route(std::string t_route, std::string t_method, ROUTE_HANDLER);
-    void handle_request(REQUEST& t_request, WEBPP::Responder t_responder);
+    void add_route(std::string t_route, ROUTE_HANDLER &t_handler);
+    // void add_route(std::string t_route, std::string t_method, ROUTE_HANDLER &t_handler);
+    void handle_request(WEBPP::Responder t_responder, REQUEST &t_request);
   };
 }
 

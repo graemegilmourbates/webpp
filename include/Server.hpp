@@ -10,6 +10,7 @@
 #include "Responder.hpp"
 #include "BindingSocket.hpp"
 #include "HttpHelpers.hpp"
+#include "Router.hpp"
 
 using ROUTE_HANDLER = std::function<void(
   WEBPP::Responder& responder,
