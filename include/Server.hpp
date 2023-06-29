@@ -26,6 +26,7 @@ namespace WEBPP{
     int accept_client();
     void handle_client(int t_client);
     std::unordered_map<std::string, ROUTE_HANDLER&> routes;
+    Router *router;
   public:
     Server(
       int domain, // AF_UNIX for local communication, AF_INET for internet domain

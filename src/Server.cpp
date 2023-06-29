@@ -8,6 +8,7 @@ WEBPP::Server::Server(
   u_long interface, // Address to bind to.
   int backlog
 ){
+  router = new Router();
   server_socket = new BindingSocket(
     domain, type, protocol, port, interface, backlog
   );
@@ -34,18 +35,8 @@ void WEBPP::Server::handle_client(int t_client){
   std::unordered_map<std::string, std::string> parsed_request;
   parsed_request = WEBPP::parse_http_request(buffer);
   std::string route = parsed_request["route"];
-  // router->handle_request(t_client, parsed_request);
   WEBPP::Responder responder(t_client);
-  //run route handler
-  if(routes.find(route) == routes.end()){
-    //handle route does not exist
-    std::cout << "Route: " << route << " does not exist" << std::endl;
-    responder.send_html("<html><body><h1>404 NOT FOUND</h1></body></html>");
-  }
-  else {
-    const ROUTE_HANDLER& route_handler = routes.at(route);
-    route_handler(responder, parsed_request);
-  }
+  router->handle_request(responder, parsed_request);
 }
 
 void WEBPP::Server::start(){
@@ -59,5 +50,5 @@ void WEBPP::Server::start(){
 }
 
 void WEBPP::Server::add_route(std::string route, ROUTE_HANDLER route_handler){
-    routes.insert({route, route_handler});
+    router->add_route(route, route_handler);
 }
