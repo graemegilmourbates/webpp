@@ -29,16 +29,22 @@ WEBPP::Route::Route(std::string t_route){
 bool WEBPP::Route::compare(std::string &t_route){
   int i=0;
   std::vector<std::string> comp_route = split_route(t_route);
+  if(route.size() != comp_route.size()) return false;
+  // Handle case where the route has no parameters
+  if(t_route == raw_route){
+    return true;
+  } else {
   // Iterate over route templates
-  for(std::string &element : route){
-    // Check if given route matches template
-    if(element != comp_route[i]){
-      // Ceck if template element is a parameter.
-      if(element[0] != ':'){
-        return false;
+    for(std::string &element : route){
+      // Check if given route matches template
+      if(element != comp_route[i]){
+        // Ceck if template element is a parameter.
+        if(element[0] != ':'){
+          return false;
+        }
       }
+      i++;
     }
-    i++;
   }
   return true;
 }
@@ -59,7 +65,9 @@ void WEBPP::Router::add_route(std::string t_route, ROUTE_HANDLER &t_handler){
 
 void WEBPP::Router::handle_request(WEBPP::Responder t_responder, REQUEST &t_request){
   for(std::pair<WEBPP::Route, ROUTE_HANDLER&> route: routes){
-    if(route.first.compare(t_request["route"])){
+    if(route.first.compare(t_request["URI"])){
+      std::cout << "Request Method: " << t_request["Method"] << std::endl;
+      std::cout << "Request URI: " << t_request["URI"] << std::endl;
       return route.second(t_responder, t_request);
     }
   }

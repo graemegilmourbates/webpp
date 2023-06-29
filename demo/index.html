@@ -112,9 +112,10 @@ document.addEventListener("DOMContentLoaded", function() {
   // Define the callback function for when the request is complete
   xhr.onreadystatechange = function() {
     if (xhr.readyState === 4 && xhr.status === 200) {
+
       // Parse the JSON response
       var jsonData = JSON.parse(xhr.responseText);
-
+      console.log(jsonData);
       // Display the received JSON data on the page
       var jsonDataDiv = document.getElementById("json-data");
       for (var key in jsonData) {
