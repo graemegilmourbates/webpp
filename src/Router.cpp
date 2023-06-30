@@ -68,7 +68,8 @@ void WEBPP::Router::handle_request(WEBPP::Responder t_responder, REQUEST &t_requ
     if(route.first.compare(t_request["URI"])){
       std::cout << "Request Method: " << t_request["Method"] << std::endl;
       std::cout << "Request URI: " << t_request["URI"] << std::endl;
-      return route.second(t_responder, t_request);
+      URL_PARAMETERS params = route.first.get_parameters(t_request["URI"]);
+      return route.second(t_responder, t_request, params);
     }
   }
   std::cout << "Route: " << t_request["route"] << " does not exist" << std::endl;

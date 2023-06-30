@@ -12,9 +12,11 @@
 #include "HttpHelpers.hpp"
 #include "Router.hpp"
 
+using URL_PARAMETERS = std::unordered_map<std::string, std::string>;
 using ROUTE_HANDLER = std::function<void(
   WEBPP::Responder& responder,
-  std::unordered_map<std::string, std::string>& request
+  std::unordered_map<std::string, std::string>& request,
+  URL_PARAMETERS params
 )>;
 
 using REQUEST = std::unordered_map<std::string, std::string>;

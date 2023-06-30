@@ -15,7 +15,8 @@ using URL_PARAMETERS = std::unordered_map<std::string, std::string>;
 using URL_PARAMETER = std::pair<int, std::string>;
 using ROUTE_HANDLER = std::function<void(
   WEBPP::Responder& responder,
-  REQUEST& request
+  REQUEST& request,
+  URL_PARAMETERS params
 )>;
 
 namespace WEBPP{
