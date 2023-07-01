@@ -14,6 +14,9 @@ namespace WEBPP{
   std::unordered_map<std::string, std::string> parse_http_request(
     char *http_request
   );
+  std::unordered_map<std::string, std::string> get_form_data(
+    std::string &body
+  );
 }
 
 #endif // HTTP HELPERS

@@ -25,12 +25,12 @@ void user_form(RESPONDER res, REQUEST req, URL_PARAMETERS params){
   if(req["Method"] == "GET"){
     res.send_file("user_form.html", "html");
   } else if(req["Method"] == "POST"){
-    std::cout << "NEW USER..." << std::endl;
-    for(const auto & [key, value] : req){
-      std::cout << key << ": " << value << std::endl;
-    }
+    std::unordered_map user_form_data = WEBPP::get_form_data(req["Body"]);
+    std::cout << "First name: " << user_form_data["firstName"] << std::endl;
+    std::cout << "Last name: " << user_form_data["lastName"] << std::endl;
+    std::cout << "email: " << user_form_data["email"] << std::endl;
+    res.send_html("<html><body><h1> Form Subitted </h1></body></html");
   }
-  res.send_html("<html><body><h1> ERROR </h1></body></html");
 }
 
 void user_id(RESPONDER res, REQUEST req, URL_PARAMETERS params){
