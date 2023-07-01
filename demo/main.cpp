@@ -32,9 +32,6 @@ void user_form(RESPONDER res, REQUEST req, URL_PARAMETERS params){
     response += "<h2>Last Name: " + user_form_data["lastName"] + "</h2>";
     response += "<h2>Email: " + user_form_data["email"] + "</h2>";
     response += "</body></html>";
-    std::cout << "First name: " << user_form_data["firstName"] << std::endl;
-    std::cout << "Last name: " << user_form_data["lastName"] << std::endl;
-    std::cout << "email: " << user_form_data["email"] << std::endl;
     res.send_html(response.c_str());
   }
 }
