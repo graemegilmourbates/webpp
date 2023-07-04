@@ -1,7 +1,6 @@
 #include <iostream>
 #include <unordered_map>
 #include <WEBPP/webpp.hpp>
-#include <WEBPP/Responder.hpp>
 #include <stdlib.h>
 #include <string>
 

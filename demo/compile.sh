@@ -1,1 +1,1 @@
-g++ -o out main.cpp -std=c++20 -lWEBPP -lssl -lcrypto
+g++ -o out main.cpp -std=c++20 -lWEBPP
