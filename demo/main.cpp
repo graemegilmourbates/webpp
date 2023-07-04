@@ -10,18 +10,14 @@ using RESPONDER = WEBPP::Responder;
 using URL_PARAMETERS = std::unordered_map<std::string, std::string>;
 
 void home_page(RESPONDER res, REQUEST req, URL_PARAMETERS params){
-  std::cout << "Sending INDEX PAGE" << std::endl;
   res.send_file("index.html", "html");
 }
 
 void favicon(RESPONDER res, REQUEST req, URL_PARAMETERS params){
-  std::cout << "Sending FAV" << std::endl;
   res.send_image("public/images/favicon.ico");
 }
 
 void user_form(RESPONDER res, REQUEST req, URL_PARAMETERS params){
-
-  std::cout << "REQUEST METHOD: " << req["Method"] << std::endl;
   if(req["Method"] == "GET"){
     res.send_file("user_form.html", "html");
   } else if(req["Method"] == "POST"){
@@ -37,7 +33,6 @@ void user_form(RESPONDER res, REQUEST req, URL_PARAMETERS params){
 }
 
 void user_id(RESPONDER res, REQUEST req, URL_PARAMETERS params){
-  std::cout << "SENDING URI PARAMS" << std::endl;
   std::string response;
   response = "<html><body><h2>User:" + params["user_name"] + "</h2></body></html>";
   res.send_html(response.c_str());
@@ -50,7 +45,6 @@ int main(int argc, const char * argv[]) {
     t.add_route("/user/", user_form);
     t.add_route("/user/:user_name", user_id);
     t.add_route("/json", [](WEBPP::Responder responder, REQUEST req,  URL_PARAMETERS params)->void{
-      std::cout << "Sending JSON" << std::endl;
       responder.send_json(
         "{\n\"JSON\":\"data\",\n\"array\":[1,2,3],\n\"key\":\"value\"\n}"
       );
