@@ -53,7 +53,7 @@ PROPERTIES
 	OUTPUT_NAME ${PROJECT_NAME}
 )
 
-configure_file(WEBPP.pc.in WEBPP.pc @ONLY)
+configure_file(webpp.pc.in WEBPP.pc @ONLY)
 
 target_include_directories(${PROJECT_NAME} PRIVATE include)
 target_include_directories(${PROJECT_NAME} PRIVATE src)
