@@ -67,7 +67,7 @@ void WEBPP::Router::add_route(std::string t_route, ROUTE_HANDLER &t_handler){
 void WEBPP::Router::handle_request(WEBPP::Responder t_responder, REQUEST &t_request){
   std::cout << "REQUEST URI: " << t_request["URI"] << std::endl;
   for(std::pair<WEBPP::Route, ROUTE_HANDLER&> route: routes){
-    std::cout << "Comparing : " << route.raw_route << " : " << t_request["URI"] << std::endl;
+    std::cout << "Comparing : " << route.first.raw_route << " : " << t_request["URI"] << std::endl;
     if(route.first.compare(t_request["URI"])){
       URL_PARAMETERS params = route.first.get_parameters(t_request["URI"]);
       return route.second(t_responder, t_request, params);
