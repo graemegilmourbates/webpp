@@ -27,8 +27,8 @@ int WEBPP::Server::accept_client(){
     &client_address_length
   );
   if(client_socket < 0){
-    std::cout << (stderr, "%s\n", explain_accept(fildes, sock_addr,
-        sock_addr_size)) << std::endl;
+    std::cout << (stderr, "%s\n", explain_accept(fildes, client_address,
+        client_address_length)) << std::endl;
   }
   return client_socket;
 }
