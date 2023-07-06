@@ -32,6 +32,7 @@ bool WEBPP::Route::compare(std::string &t_route){
   if(route.size() != comp_route.size()) return false;
   // Handle case where the route has no parameters
   if(t_route == raw_route){
+    std::cout << "Found route match :" << t_route << raw_route << std::endl;
     return true;
   } else {
   // Iterate over route templates
@@ -69,6 +70,7 @@ void WEBPP::Router::handle_request(WEBPP::Responder t_responder, REQUEST &t_requ
   for(std::pair<WEBPP::Route, ROUTE_HANDLER&> route: routes){
     std::cout << "Comparing : " << route.first.raw_route << " : " << t_request["URI"] << std::endl;
     if(route.first.compare(t_request["URI"])){
+
       URL_PARAMETERS params = route.first.get_parameters(t_request["URI"]);
       return route.second(t_responder, t_request, params);
     }
