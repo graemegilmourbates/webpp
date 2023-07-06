@@ -72,6 +72,7 @@ void WEBPP::Router::handle_request(WEBPP::Responder t_responder, REQUEST &t_requ
     if(route.first.compare(t_request["URI"])){
 
       URL_PARAMETERS params = route.first.get_parameters(t_request["URI"]);
+      std::cout << "Using response handler from : " << route.first.raw_route << std::endl;
       return route.second(t_responder, t_request, params);
     }
   }
