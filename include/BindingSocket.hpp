@@ -2,7 +2,7 @@
 #define BINDINGSOCKET_HPP
 
 #include <iostream>
-
+#include <sys/types.h>
 #include "BaseSocket.hpp"
 
 
