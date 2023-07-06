@@ -23,13 +23,13 @@ namespace WEBPP{
   class Route{
   private:
     // Hold copy of the raw route template
-    std::string raw_route;
     std::vector<std::string> route;
     // Store parameters and their location
     // URL location 0/1/2/3/4/5 (location seperated by '/')
     std::vector<std::pair<int, std::string>> url_parameters;
     std::vector<std::string> split_route(std::string &a_route);
   public:
+    std::string raw_route;
     // The constructor takes in a route template
     // ex. this/route/has/:id
     // actual request: this/route/has/3
