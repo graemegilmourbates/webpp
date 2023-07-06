@@ -9,7 +9,7 @@ WEBPP::BaseSocket::BaseSocket(
 ){
   // Define the address
   address.sin6_family = domain;
-  address.sin6_addr = interface;
+  address.sin6_addr = in6addr_any;
   address.sin6_port = htons(port);
   // Create socket
   sock=socket(domain, type, protocol);
