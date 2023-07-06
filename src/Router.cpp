@@ -46,6 +46,7 @@ bool WEBPP::Route::compare(std::string &t_route){
       i++;
     }
   }
+  std::cout << "Found route match :" << t_route << raw_route << std::endl;
   return true;
 }
 // Get url parameters from a url string.
@@ -64,7 +65,7 @@ void WEBPP::Router::add_route(std::string t_route, ROUTE_HANDLER &t_handler){
 }
 
 void WEBPP::Router::handle_request(WEBPP::Responder t_responder, REQUEST &t_request){
-  std::cout << t_request["URI"] << std::endl;
+  std::cout << "REQUEST URI: " << t_request["URI"] << std::endl;
   for(std::pair<WEBPP::Route, ROUTE_HANDLER&> route: routes){
     if(route.first.compare(t_request["URI"])){
       URL_PARAMETERS params = route.first.get_parameters(t_request["URI"]);
