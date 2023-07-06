@@ -61,7 +61,7 @@ URL_PARAMETERS WEBPP::Route::get_parameters(std::string &t_route){
 }
 
 void WEBPP::Router::add_route(std::string t_route, ROUTE_HANDLER &t_handler){
-  std::pair<Route, ROUTE_HANDLER&> route(Route(t_route), t_handler);
+  std::pair<Route, ROUTE_HANDLER&> route(Route(t_route), &t_handler);
   routes.push_back(route);
 }
 
