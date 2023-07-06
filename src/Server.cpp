@@ -43,6 +43,8 @@ void WEBPP::Server::start(){
   std::vector<std::thread> client_threads;
   while(true){
     int client_socket = accept_client();
+    std::cout << "New client :" << client_socket << std::endl;
+    std::cout << "Spawning new thread..." << std::endl;
     client_threads.push_back(std::thread(
       &Server::handle_client, this, client_socket
     ));
