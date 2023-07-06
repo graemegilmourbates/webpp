@@ -44,6 +44,7 @@ int main(int argc, const char * argv[]) {
     t.add_route("/user/", user_form);
     t.add_route("/user/:user_name", user_id);
     t.add_route("/json", [](WEBPP::Responder responder, REQUEST req,  URL_PARAMETERS params)->void{
+      std::cout << "In json response:: uri:: " << req["URI"] << std::endl
       responder.send_json(
         "{\n\"JSON\":\"data\",\n\"array\":[1,2,3],\n\"key\":\"value\"\n}"
       );
