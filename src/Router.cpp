@@ -69,7 +69,7 @@ void WEBPP::Router::handle_request(WEBPP::Responder t_responder, REQUEST &t_requ
 
       URL_PARAMETERS params = route.first.get_parameters(t_request["URI"]);
       logger->log("Using response handler from : " + route.first.raw_route);
-      return route.second->(t_responder, t_request, params);
+      return *route.second(t_responder, t_request, params);
     }
   }
   t_responder.send_html("<html><body><h1>404 NOT FOUND</h1></body></html>");
