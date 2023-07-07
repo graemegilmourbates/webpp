@@ -4,3 +4,4 @@
 #include "HttpHelpers.hpp"
 #include "Router.hpp"
 #include "Responder.hpp"
+#include "Logger.hpp"

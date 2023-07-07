@@ -9,6 +9,7 @@
 #include <functional>
 
 #include "Responder.hpp"
+#include "Logger.hpp"
 
 using REQUEST = std::unordered_map<std::string, std::string>;
 using URL_PARAMETERS = std::unordered_map<std::string, std::string>;

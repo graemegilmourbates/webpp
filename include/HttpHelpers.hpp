@@ -10,6 +10,8 @@
 #include <sstream>
 #include <iostream>
 
+#include "Logger.hpp"
+
 namespace WEBPP{
   std::unordered_map<std::string, std::string> parse_http_request(
     char *http_request

@@ -44,7 +44,7 @@ void WEBPP::Responder::send_file(
   std::string response = responseStream.str();
   // Send response Header
   if (send(client, response.c_str(), response.length(), 0) == -1) {
-    std::cout << "Failed to send HTTP response" << std::endl;
+    logger->error("Failed to send HTTP response...");
     exit(EXIT_FAILURE);
   }
   // Return to beginning of the file
@@ -56,11 +56,11 @@ void WEBPP::Responder::send_file(
     // read in a chunk
     bytes_read = file.read(buffer, sizeof(buffer)).gcount();
     if(bytes_read <= 0){
-      std::cout << "Problem with file read" << std::endl;
+      logger->warning("Problem with file read");
       break;
     }
     if(send(client, buffer, bytes_read, 0) == -1){
-      std::cout << "Failed to send image data" << std::endl;
+      logger->error("Failed to send image data");
       exit(EXIT_FAILURE);
     }
     file_size -= bytes_read;

@@ -27,8 +27,9 @@ int WEBPP::Server::accept_client(){
     &client_address_length
   );
   if(client_socket < 0){
-    std::cout << (stderr, "%s\n", explain_accept(get_socket()->get_sock(), (struct sockaddr *)&client_address,
-        &client_address_length)) << std::endl;
+    logger->warning("Error accepting client...");
+    // std::cout << (stderr, "%s\n", explain_accept(get_socket()->get_sock(), (struct sockaddr *)&client_address,
+        // &client_address_length)) << std::endl;
   }
   return client_socket;
 }
@@ -47,8 +48,6 @@ void WEBPP::Server::start(){
   std::vector<std::thread> client_threads;
   while(true){
     int client_socket = accept_client();
-    std::cout << "New client :" << client_socket << std::endl;
-    std::cout << "Spawning new thread..." << std::endl;
     client_threads.push_back(std::thread(
       &Server::handle_client, this, client_socket
     ));

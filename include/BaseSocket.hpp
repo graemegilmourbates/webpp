@@ -6,6 +6,8 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 
+#include "Logger.hpp"
+
 namespace WEBPP{
   class BaseSocket{
   private:

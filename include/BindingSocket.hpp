@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <sys/types.h>
+#include "Logger.hpp"
 #include "BaseSocket.hpp"
 
 

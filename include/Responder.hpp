@@ -13,6 +13,8 @@
 #include <sstream>
 #include <filesystem>
 
+#include "Logger.hpp"
+
 namespace WEBPP{
   class Responder{
   private:

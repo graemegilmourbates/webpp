@@ -8,6 +8,7 @@ using REQUEST = std::unordered_map<std::string, std::string>;
 using RESPONDER = WEBPP::Responder;
 using URL_PARAMETERS = std::unordered_map<std::string, std::string>;
 
+
 void home_page(RESPONDER res, REQUEST req, URL_PARAMETERS params){
   res.send_file("index.html", "html");
 }

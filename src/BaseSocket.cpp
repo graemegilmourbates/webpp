@@ -18,7 +18,7 @@ WEBPP::BaseSocket::BaseSocket(
 
 void WEBPP::BaseSocket::check_connection(int t_connection_sock){
   if(t_connection_sock < 0){
-    perror("Socket Failed to Connect");
+    logger->error("Socket Failed to Connect");
     exit(EXIT_FAILURE);
   }
 }
