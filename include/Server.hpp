@@ -15,12 +15,12 @@
 #include "Logger.hpp"
 
 using URL_PARAMETERS = std::unordered_map<std::string, std::string>;
-using ROUTE_HANDLER = void *;
-// using ROUTE_HANDLER = void*(
-//   WEBPP::Responder& responder,
-//   std::unordered_map<std::string, std::string>& request,
-//   URL_PARAMETERS params
-// );
+using ROUTE_HANDLER = void(
+  WEBPP::Responder& responder,
+  std::unordered_map<std::string, std::string>& request,
+  URL_PARAMETERS params
+);
+
 using REQUEST = std::unordered_map<std::string, std::string>;
 
 namespace WEBPP{

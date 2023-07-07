@@ -9,15 +9,15 @@ using RESPONDER = WEBPP::Responder;
 using URL_PARAMETERS = std::unordered_map<std::string, std::string>;
 
 
-void home_page(RESPONDER res, REQUEST req, URL_PARAMETERS params){
+void home_page(RESPONDER &res, REQUEST &req, URL_PARAMETERS params){
   res.send_file("index.html", "html");
 }
 
-void favicon(RESPONDER res, REQUEST req, URL_PARAMETERS params){
+void favicon(RESPONDER &res, REQUEST &req, URL_PARAMETERS params){
   res.send_image("public/images/favicon.ico");
 }
 
-void user_form(RESPONDER res, REQUEST req, URL_PARAMETERS params){
+void user_form(RESPONDER &res, REQUEST &req, URL_PARAMETERS params){
   if(req["Method"] == "GET"){
     res.send_file("user_form.html", "html");
   } else if(req["Method"] == "POST"){
@@ -32,13 +32,13 @@ void user_form(RESPONDER res, REQUEST req, URL_PARAMETERS params){
   }
 }
 
-void user_id(RESPONDER res, REQUEST req, URL_PARAMETERS params){
+void user_id(RESPONDER &res, REQUEST &req, URL_PARAMETERS params){
   std::string response;
   response = "<html><body><h2>User:" + params["user_name"] + "</h2></body></html>";
   res.send_html(response.c_str());
 }
 
-void json(RESPONDER res, REQUEST req, URL_PARAMETERS params){
+void json(RESPONDER &res, REQUEST &req, URL_PARAMETERS params){
   res.send_json(
     "{\n\"JSON\":\"data\",\n\"array\":[1,2,3],\n\"key\":\"value\"\n}"
   );
