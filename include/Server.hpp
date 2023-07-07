@@ -41,7 +41,7 @@ namespace WEBPP{
       int backlog
     );
     void start();
-    void add_route(std::string route, ROUTE_HANDLER *handler);
+    void add_route(std::string route, &ROUTE_HANDLER);
     // ACCESS FUNCTIONS
     BindingSocket *get_socket();
   };
