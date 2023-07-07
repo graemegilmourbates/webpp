@@ -54,6 +54,6 @@ void WEBPP::Server::start(){
   }
 }
 
-void WEBPP::Server::add_route(std::string route, ROUTE_HANDLER &route_handler){
+void WEBPP::Server::add_route(std::string route, ROUTE_HANDLER *route_handler){
     router->add_route(route, route_handler);
 }

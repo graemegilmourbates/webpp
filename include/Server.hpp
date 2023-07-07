@@ -15,11 +15,11 @@
 #include "Logger.hpp"
 
 using URL_PARAMETERS = std::unordered_map<std::string, std::string>;
-using ROUTE_HANDLER = std::function<void(
+using ROUTE_HANDLER = void*(
   WEBPP::Responder& responder,
   std::unordered_map<std::string, std::string>& request,
   URL_PARAMETERS params
-)>;
+);
 
 using REQUEST = std::unordered_map<std::string, std::string>;
 
@@ -29,7 +29,7 @@ namespace WEBPP{
     BindingSocket *server_socket;
     int accept_client();
     void handle_client(int t_client);
-    std::unordered_map<std::string, ROUTE_HANDLER&> routes;
+    std::unordered_map<std::string, ROUTE_HANDLER*> routes;
     Router *router;
   public:
     Server(
@@ -41,7 +41,7 @@ namespace WEBPP{
       int backlog
     );
     void start();
-    void add_route(std::string route, ROUTE_HANDLER&);
+    void add_route(std::string route, ROUTE_HANDLER*);
     // ACCESS FUNCTIONS
     BindingSocket *get_socket();
   };

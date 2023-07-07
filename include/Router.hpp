@@ -14,11 +14,11 @@
 using REQUEST = std::unordered_map<std::string, std::string>;
 using URL_PARAMETERS = std::unordered_map<std::string, std::string>;
 using URL_PARAMETER = std::pair<int, std::string>;
-using ROUTE_HANDLER = std::function<void(
+using ROUTE_HANDLER = void*(
   WEBPP::Responder& responder,
-  REQUEST& request,
+  std::unordered_map<std::string, std::string>& request,
   URL_PARAMETERS params
-)>;
+);
 
 namespace WEBPP{
   class Route{
@@ -43,9 +43,9 @@ namespace WEBPP{
 
   class Router{
   private:
-    std::vector<std::pair<Route, ROUTE_HANDLER&>> routes;
+    std::vector<std::pair<Route, ROUTE_HANDLER*>> routes;
   public:
-    void add_route(std::string t_route, ROUTE_HANDLER &t_handler);
+    void add_route(std::string t_route, ROUTE_HANDLER *t_handler);
     // void add_route(std::string t_route, std::string t_method, ROUTE_HANDLER &t_handler);
     void handle_request(WEBPP::Responder t_responder, REQUEST &t_request);
   };

@@ -60,20 +60,19 @@ URL_PARAMETERS WEBPP::Route::get_parameters(std::string &t_route){
   return parameters;
 }
 
-void WEBPP::Router::add_route(std::string t_route, ROUTE_HANDLER &t_handler){
-  std::pair<Route, ROUTE_HANDLER&> route(Route(t_route), t_handler);
-  logger->log("Adding route, with handler address: " + t_handler);
+void WEBPP::Router::add_route(std::string t_route, ROUTE_HANDLER *t_handler){
+  std::pair<Route, ROUTE_HANDLER*> route(Route(t_route), t_handler);
   routes.push_back(route);
 }
 
 void WEBPP::Router::handle_request(WEBPP::Responder t_responder, REQUEST &t_request){
   logger->log("REQUEST URI: " + t_request["URI"]);
-  for(std::pair<WEBPP::Route, ROUTE_HANDLER&> route: routes){
+  for(std::pair<WEBPP::Route, ROUTE_HANDLER*> route: routes){
     if(route.first.compare(t_request["URI"])){
 
       URL_PARAMETERS params = route.first.get_parameters(t_request["URI"]);
       logger->log("Using response handler from : " + route.first.raw_route);
-      return route.second(t_responder, t_request, params);
+      route.second(t_responder, t_request, params);
     }
   }
   t_responder.send_html("<html><body><h1>404 NOT FOUND</h1></body></html>");
