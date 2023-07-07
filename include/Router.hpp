@@ -14,11 +14,12 @@
 using REQUEST = std::unordered_map<std::string, std::string>;
 using URL_PARAMETERS = std::unordered_map<std::string, std::string>;
 using URL_PARAMETER = std::pair<int, std::string>;
-using ROUTE_HANDLER = void*(
-  WEBPP::Responder& responder,
-  std::unordered_map<std::string, std::string>& request,
-  URL_PARAMETERS params
-);
+using ROUTE_HANDLER = void *;
+// using ROUTE_HANDLER = void*(
+//   WEBPP::Responder& responder,
+//   std::unordered_map<std::string, std::string>& request,
+//   URL_PARAMETERS params
+// );
 
 namespace WEBPP{
   class Route{
