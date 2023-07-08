@@ -64,16 +64,24 @@ namespace HTML {
       return *this;
     }
 
+    // Method for adding multiple child nodes
+    Node& operator[](const std::vector<Node> nodes){
+      for(const auto& node : nodes){
+        content.push_back(node);
+      }
+      return *this;
+    }
+
     // Generate the opening tag
     std::string open() const {
       std::stringstream out;
       out << "<" << name;
       for (const Attribute& attr : attributes) {
-        logger->log("Adding attribute");
         out << " " << attr.name << "=\"";
         for (const std::string& attr_value : attr.values) {
           out << attr_value << " ";
         }
+        out.seekp(-1, out.cur);
         out << "\"";
       }
       if (self_closing) {
@@ -134,6 +142,14 @@ namespace HTML {
       return *this;
     }
 
+    // Method for adding multiple nodes to <body> tag
+    Doc& operator[](const std::vector<Node>& t_nodes){
+      for(const auto& node : t_nodes){
+        html.content[1](node);
+      }
+      return *this;
+    }
+
     // Render the HTML document as a string
     std::string render() const {
       std::stringstream out;
@@ -183,15 +199,29 @@ namespace HTML {
     return node;
   }
 
-  // Convenience function to create a self-closing HTML tag
-  inline Node selfClosingTag(const std::string& name) {
-    return Node(name, true);
-  }
-
   // Convenience function to create an HTML tag without attributes or body
   inline Node tag(const std::string& name) {
     return Node(name);
   }
+
+  // Convenience function to create an self-closing HTML tag with attributes
+  inline Node cls_tag(
+    const std::string& name,
+    const std::vector<Attribute> t_attributes
+  ) {
+    Node node(name, true);
+    for(const auto& attribute : t_attributes){
+      node(attribute.name, attribute.values);
+    }
+    return node;
+  }
+
+  // Convenience function to create a self-closing HTML tag without
+  // attributes or body
+  inline Node cls_tag(const std::string& name) {
+    return Node(name, true);
+  }
+
 }
 
 #endif
