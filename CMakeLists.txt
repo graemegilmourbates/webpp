@@ -27,6 +27,7 @@ set(HEADER_FILES
 	include/webpp.hpp
   include/Router.hpp
   include/Logger.hpp
+  include/Templater.hpp
 )
 
 set(REQUIRED_LIBRARIES
