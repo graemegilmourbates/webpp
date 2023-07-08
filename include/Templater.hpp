@@ -20,6 +20,12 @@ namespace HTML {
 
     Attribute(std::string t_name) : name(t_name) {}
 
+    Attribute(std::string t_name, std::vector<std::string> t_values) : name(t_name) {
+      for(const std::string& value : t_values){
+        add_value(value);
+      }
+    }
+
     void add_value(std::string t_value) {
       values.push_back(t_value);
     }
@@ -136,24 +142,37 @@ namespace HTML {
     }
   };
 
+  // Convenience function to create an attribute
+  inline Attribute attr(
+    const std::string& name,
+    const std::vector<std::string> values
+  ) {
+    Attribute attribute(name, values);
+    return attribute;
+  }
+
   // Convenience function to create an HTML tag with attributes and body
   inline Node tag(
     const std::string& name,
-    const std::string& t_attribute,
-    const std::vector<std::string> t_attributes,
+    const std::vector<Attribute> t_attributes,
     const std::string& body) {
     Node node(name);
-    node(t_attribute, t_attributes)(body);
+    for(const auto& attribute : t_attributes){
+      node(attribute.name, attribute.values);
+    }
+    node(body);
     return node;
   }
 
   // Convenience function to create an HTML tag with attributes
   inline Node tag(
     const std::string& name,
-    const std::pair<std::string, std::vector<std::string>&> t_attribute
+    const std::vector<Attribute> t_attributes
   ) {
     Node node(name);
-    node(t_attribute.first, t_attribute.second);
+    for(const auto& attribute : t_attributes){
+      node(attribute.name, attribute.values);
+    }
     return node;
   }
 
