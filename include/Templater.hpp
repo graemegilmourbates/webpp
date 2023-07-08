@@ -2,6 +2,7 @@
 #include <sstream>
 #include <vector>
 #include <map>
+#include "Logger.hpp"
 
 #ifndef TEMPLATER
 #define  TEMPLATER
@@ -47,6 +48,7 @@ namespace HTML{
       for(std::string value : t_values){
         attr.add_value(value);
       }
+      attributes.push_back(attr);
     }
     void add_body(std::string t_body){
       body = t_body + "\n";
@@ -57,6 +59,7 @@ namespace HTML{
       std::stringstream out;
       out << "<" << name;
       for(Attribute attr : attributes){
+        logger->log("Adding attribute");
         out << " ";
         out << attr.name << "=\"";
         for(std::string attr_value : attr.values){
