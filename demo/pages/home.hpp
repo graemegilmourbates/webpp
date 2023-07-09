@@ -30,7 +30,7 @@ Node home_page(){
   hello_world << "void hello_world(RESPONDER &res, REQUEST &req, URL_PARAMETERS params){\n";
   hello_world << "  HTML::Doc doc;\n";
   hello_world << "  doc[HTML::tag(\"h1\")(\"Hello World\")];\n";
-  hello_world << "\tres.send_html(doc.render().c_str());\n";
+  hello_world << "  res.send_html(doc.render().c_str());\n";
   hello_world << "}\n";
   hello_world << "\n";
   hello_world << "int main(){\n";
