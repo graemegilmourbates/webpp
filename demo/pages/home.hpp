@@ -28,15 +28,15 @@ Node home_page(){
   hello_world << "using URL_PARAMETERS = std::unordered_map&ltstd::string, std::string&gt;\n";
   hello_world << "\n";
   hello_world << "void hello_world(RESPONDER &res, REQUEST &req, URL_PARAMETERS params){\n";
-  hello_world << "\tHTML::Doc doc;\n";
-  hello_world << "\tdoc[HTML::tag(\"h1\")(\"Hello World\")];\n";
+  hello_world << "  HTML::Doc doc;\n";
+  hello_world << "  doc[HTML::tag(\"h1\")(\"Hello World\")];\n";
   hello_world << "\tres.send_html(doc.render().c_str());\n";
   hello_world << "}\n";
   hello_world << "\n";
   hello_world << "int main(){\n";
-  hello_world << "\tWEBPP::Server serv(AF_INET6, SOCK_STREAM, 0, 80, INADDR_ANY, 100);\n";
-  hello_world << "\tserv.add_route(\"/\", hello_world);\n";
-  hello_world << "\treturn 0;\n";
+  hello_world << "  WEBPP::Server serv(AF_INET6, SOCK_STREAM, 0, 80, INADDR_ANY, 100);\n";
+  hello_world << "  serv.add_route(\"/\", hello_world);\n";
+  hello_world << "  return 0;\n";
   hello_world << "}\n";
   content(tag("pre")(
     hello_world.str()
