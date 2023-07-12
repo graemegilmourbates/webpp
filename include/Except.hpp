@@ -2,6 +2,7 @@
 #define EXCEPT_HPP
 
 #include <iostream>
+#include <string>
 
 // Exception for failed log file open
 class FailedLogFileOpen : public std::exception{
