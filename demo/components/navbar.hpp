@@ -6,7 +6,7 @@ using namespace HTML;
 
 Node generate_nav_brand(std::string t_brand){
   return tag(
-    "a", {attr("class", {"navbar-brand"}), attr("href", {"#"})}, "Web ++"
+    "a", {attr("class", {"navbar-brand"}), attr("href", {"/"})}, "Web ++"
   );
 }
 

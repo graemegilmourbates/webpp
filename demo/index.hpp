@@ -7,10 +7,10 @@
 using namespace HTML;
 std::string index(){
   std::map<std::string, std::string> nav_links{
-    {"Sockets", "#"},
-    {"Server", "#"},
-    {"Router", "#"},
-    {"Responder", "#"}
+    {"Sockets", "/sockets"},
+    {"Server", "/server"},
+    {"Router", "/router"},
+    {"Responder", "/responder"}
   };
   Doc doc;
   // Set meta

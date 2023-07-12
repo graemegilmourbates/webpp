@@ -7,13 +7,26 @@
 
 #include "index.hpp"
 
-using REQUEST = std::unordered_map<std::string, std::string>;
-using RESPONDER = WEBPP::Responder;
-using URL_PARAMETERS = std::unordered_map<std::string, std::string>;
 
 
 void home_page(RESPONDER &res, REQUEST &req, URL_PARAMETERS params){
   res.send_html(index().c_str());
+}
+
+void sockets(RESPONDER &res, REQUEST &req, URL_PARAMETERS params){
+  res.send_file("pages/sockets.html", "html");
+}
+
+void server(RESPONDER &res, REQUEST &req, URL_PARAMETERS params){
+  res.send_file("pages/server.html", "html");
+}
+
+void router(RESPONDER &res, REQUEST &req, URL_PARAMETERS params){
+  res.send_file("pages/router.html", "html");
+}
+
+void responder(RESPONDER &res, REQUEST &req, URL_PARAMETERS params){
+  res.send_file("pages/responder.html", "html");
 }
 
 void favicon(RESPONDER &res, REQUEST &req, URL_PARAMETERS params){
@@ -54,6 +67,10 @@ int main(int argc, const char * argv[]) {
   t.add_route("/user/:user_name", user_id);
   t.add_route("/json", json);
   t.add_route("/", home_page);
+  t.add_route("/sockets", sockets);
+  t.add_route("/server", server);
+  t.add_route("/router", router);
+  t.add_route("/responder", responder);
   if(argc == 1){
     logger >> "No extra commands passed... Sever not deployed...";
     t.start();

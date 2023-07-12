@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Responder Documentation</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+
+  <!-- Bootstrap JS -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">Web ++</a>
+      <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="/responder">Responder</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="/router">Router</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="/server">Server</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="/sockets">Sockets</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <h1>Responder Documentation</h1>
+    <hr>
+
+    <h2>Class: Responder</h2>
+    <p>The Responder class provides functionality for sending responses to clients.</p>
+
+    <h3>Constructor</h3>
+    <pre>
+      Responder(int t_client);
+    </pre>
+
+    <h3>Public Methods</h3>
+    <ul>
+      <li>
+        <code>void send_html(const char *t_html)</code> - Sends an HTML response to the client.
+      </li>
+      <li>
+        <code>void send_json(const char *t_json)</code> - Sends a JSON response to the client.
+      </li>
+      <li>
+        <code>void send_file(std::string t_file_path, std::string t_file_type)</code> - Sends a file response to the client.
+      </li>
+      <li>
+        <code>void send_image(std::string t_image_path)</code> - Sends an image response to the client.
+      </li>
+      <li>
+        <code>void send_video(std::string t_image_path)</code> - Sends a video response to the client.
+      </li>
+      <li>
+        <code>void send_audio(std::string t_image_path)</code> - Sends an audio response to the client.
+      </li>
+    </ul>
+
+    <h3>Private Methods</h3>
+    <ul>
+      <li>
+        <code>void set_response_header(char *t_header)</code> - Sets the response header.
+      </li>
+      <li>
+        <code>void send_response(const char *t_response)</code> - Sends the response to the client.
+      </li>
+    </ul>
+  </div>
+</body>
+</html>
