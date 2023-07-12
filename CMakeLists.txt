@@ -28,6 +28,7 @@ set(HEADER_FILES
   include/Router.hpp
   include/Logger.hpp
   include/Templater.hpp
+  include/Except.hpp
 )
 
 set(REQUIRED_LIBRARIES

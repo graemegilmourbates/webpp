@@ -5,33 +5,33 @@ WEBPP::Server::Server(
   int type, // SOCK_STREAM, SOCK_DGRAM or SOCK_SEQPACKET (SOCK_STREAM is norm)
   int protocol, // Standard is 0, read https://docs.oracle.com/cd/E19620-01/805-4041/6j3r8iu2o/index.html
   int port, // Desired PORT ex 80
-  u_long interface, // Address to bind to.
+  // u_long interface, // Address to bind to.
   int backlog
 ){
   router = new Router();
   server_socket = new BindingSocket(
-    domain, type, protocol, port, interface, backlog
+    domain, type, protocol, port, /* interface, */ backlog
   );
-}
-
-WEBPP::BindingSocket *WEBPP::Server::get_socket(){
-  return server_socket;
 }
 
 int WEBPP::Server::accept_client(){
   struct sockaddr_in6 client_address;
   socklen_t client_address_length;
-  int client_socket = accept(
+  int client_socket_fd = accept(
     get_socket()->get_sock(),
     (struct sockaddr *)&client_address,
     &client_address_length
   );
-  if(client_socket < 0){
-    logger->error("Error accepting client...");
-    std::cout << (stderr, "%s\n", explain_accept(get_socket()->get_sock(), (struct sockaddr *)&client_address,
-      &client_address_length)) << std::endl;
+  try{
+    if(client_socket_fd < 0){
+      throw SocketSystemCallException(strdup("accept error"));
+    }
   }
-  return client_socket;
+  catch(SocketSystemCallException ssce){
+    logger << ssce.what();
+    exit(EXIT_FAILURE);
+  }
+  return client_socket_fd;
 }
 
 void WEBPP::Server::handle_client(int t_client){
@@ -56,4 +56,8 @@ void WEBPP::Server::start(){
 
 void WEBPP::Server::add_route(std::string route, ROUTE_HANDLER *route_handler){
     router->add_route(route, route_handler);
+}
+
+WEBPP::BindingSocket *WEBPP::Server::get_socket(){
+  return server_socket;
 }

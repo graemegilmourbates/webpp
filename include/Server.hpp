@@ -6,13 +6,9 @@
 #include <string>
 #include <unordered_map>
 #include <thread>
-#include <libexplain/accept.h>
+// #include <libexplain/accept.h>
 
-#include "Responder.hpp"
-#include "BindingSocket.hpp"
-#include "HttpHelpers.hpp"
-#include "Router.hpp"
-#include "Logger.hpp"
+#include "webpp.hpp"
 
 using URL_PARAMETERS = std::unordered_map<std::string, std::string>;
 using ROUTE_HANDLER = void(
@@ -37,7 +33,7 @@ namespace WEBPP{
       int type, // SOCK_STREAM, SOCK_DGRAM or SOCK_SEQPACKET (SOCK_STREAM is norm)
       int protocol, // Standard is 0, read https://docs.oracle.com/cd/E19620-01/805-4041/6j3r8iu2o/index.html
       int port, // Desired PORT ex 80
-      u_long interface, // Address to bind to.
+      // u_long interface, // Address to bind to.
       int backlog
     );
     void start();
