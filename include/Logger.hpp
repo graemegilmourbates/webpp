@@ -1,97 +1,169 @@
-#include <iostream>
-#include <fstream>
+#ifndef LOGGER_HPP
+#define LOGGER_HPP
 
-#ifndef LOGGER
-#define LOGGER
+#include <iostream>
+#include <sstream>
+#include <fstream>
+#include <ctime>
+
+#include "Except.hpp"
+
+#define LOG "#### LOG:: "
+#define WRN "#### WARNING:: "
+#define ERR "#### ERROR:: "
 
 class Logger{
 private:
-  bool to_screen=true;
-  bool to_file=false;
-  bool debug=true;
+  std::string log_path;
   std::ofstream log_file;
+  bool to_file, to_console, is_debug;
 public:
-  Logger(){}
-
-  Logger(std::string file){
-    to_file=true;
-    set_log_file(file);
+  // Constructor Sets default log file...
+  Logger() : Logger("~/.webpp.log") {}
+  Logger(std::string t_log_file_path){
+    to_file = true;
+    to_console = true;
+    is_debug = true;
+    openLogFile();
   }
 
+  // Copy constructor
+  Logger(const Logger& other){
+    this->log_path = other.log_path;
+    this->to_file = other.to_file;
+    this->to_console = other.to_console;
+    this->is_debug = other.is_debug;
+  }
+
+  // Copy assignment operator
+  Logger& operator=(const Logger& other){
+    if(this != &other){
+      this->log_path = other.log_path;
+      this->to_file = other.to_file;
+      this->to_console = other.to_console;
+      this->is_debug = other.is_debug;
+    }
+    return *this;
+  }
+
+  // Move Constructor
+  Logger(Logger&& other) noexcept{
+    this->log_path = std::move(other.log_path);
+    this->to_file = std::move(other.to_file);
+    this->to_console = std::move(other.to_console);
+    this->is_debug = std::move(other.is_debug);
+  }
+
+  // Move assignment
+  Logger& operator=(Logger&& other) noexcept{
+    if(this != &other){
+      this->log_path = std::move(other.log_path);
+      this->to_file = std::move(other.to_file);
+      this->to_console = std::move(other.to_console);
+      this->is_debug = std::move(other.is_debug);
+    }
+    return *this;
+  }
+
+  // Destruct
   ~Logger(){
     if(log_file.is_open()){
-      log_file.close();
+      closeLogFile();
     }
   }
 
-  void log_to_screen(bool screen_option){
-    to_screen=screen_option;
+  // Set debug state
+  void debug(bool t_state){
+    is_debug = t_state;
   }
 
-  void log_to_file(bool file_option){
-    to_file=file_option;
-    if(file_option==true){
+  const std::string get_time(){
+    std::time_t current_time = std::time(nullptr);
+    std::string formatted_time = std::ctime(&current_time);
+    formatted_time.pop_back(); // Remove newline char from ctime
+    return formatted_time;
+  }
+
+  void openLogFile(){
+    log_file.open(log_path, std::ios::app);
+    try{
       if(!log_file.is_open()){
-        to_file=false;
-        throw "No file open";
+        throw FailedLogFileOpen();
+      }
+      log_file << "=== Log Started: " << get_time() << " ===" << std::endl;
+    }
+    // If log file fails to open... Print to console or exit;
+    catch(FailedLogFileOpen flfo){
+      if(to_console){
+        std::cout << flfo.what();
+      } else {
+        // Will Terminate:
+        // File cannot be accessed and console output is disabled
+        exit(EXIT_FAILURE);
       }
     }
   }
 
-  void set_log_file(std::string file){
+  void closeLogFile(){
     if(log_file.is_open()){
+      log_file << "=== Log Ended: " << get_time() << " ===" << std::endl;
       log_file.close();
     }
-    log_file.open(file);
-    if(log_file.is_open()){
-      to_file=true;
-    } else {
-      throw "Could not open file";
+  }
+
+  // Log status { error, warning, log } : { 0, 1, 2 }
+  std::stringstream gen_message(const int log_status, const char* &message){
+    std::string formatted_time = get_time();
+    std::stringstream msg;
+    if(log_status == 0){ msg << ERR; } // ERROR
+    else if(log_status == 1){ msg << WRN; } // WARNING
+    else { msg << LOG; } // LOG
+    msg << formatted_time << ": " << message << std::endl;
+    return msg;
+  }
+
+  void log(const int log_status, const char* &message){
+    std::stringstream msg = gen_message(1, message);
+
+    if(to_console){
+      std::cout << msg.str();
+    }
+
+    if(to_file && log_file.is_open()){
+      log_file << msg.str();
     }
   }
 
-  void log(std::string message){
-    if(to_screen){
-      std::cout << "LOG: " << message << std::endl;
-    }
-    if(to_file){
-      if(log_file.is_open()){
-        if(debug){
-          log_file << "LOG: " << message << "\n";
-        }
-      } else {
-        throw "No file opened";
-      }
-    }
+  // Log: Log
+  void operator()(const char* message){
+    log(2, message);
+  }
+  void operator()(const std::string message){
+    const char* msg = message.c_str();
+    log(2, msg);
   }
 
-  void warning(std::string message){
-    if(to_screen){
-      std::cout << "WARNING: " << message << std::endl;
-    }
-    if(to_file){
-      if(log_file.is_open()){
-        log_file << "WARNING: " << message << "\n";
-      } else {
-        throw "No file opened";
-      }
-    }
+  // Log: Log Warning
+  void operator>>(const char* message){
+    log(1, message);
+  }
+  void operator>>(const std::string message){
+    const char* msg = message.c_str();
+    log(1, msg);
   }
 
-  void error(std::string message){
-    if(to_screen){
-      std::cout << "ERROR: " << message << std::endl;
-    }
-    if(to_file){
-      if(log_file.is_open()){
-        log_file << "ERROR: " << message << "\n";
-      } else {
-        throw "No file opened";
-      }
-    }
+  // Log: Log Error
+  void operator<<(const char* message){
+    log(0, message);
   }
+  void operator<<(const std::string message){
+    const char* msg = message.c_str();
+    log(0, msg);
+  }
+
+
 };
 
-extern Logger *logger;
+extern Logger logger;
 
-#endif
+#endif // LOGGER_HPP
