@@ -48,7 +48,7 @@ void json(RESPONDER &res, REQUEST &req, URL_PARAMETERS params){
 }
 
 int main(int argc, const char * argv[]) {
-  WEBPP::Server t(AF_INET6, SOCK_STREAM, 0, 80, INADDR_ANY, 100);
+  WEBPP::Server t(AF_INET6, SOCK_STREAM, 0, 80, /*INADDR_ANY*/ 5);
   t.add_route("/favicon.ico", favicon);
   t.add_route("/user/", user_form);
   t.add_route("/user/:user_name", user_id);
