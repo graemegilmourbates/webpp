@@ -5,6 +5,7 @@
 #include <sstream>
 #include <fstream>
 #include <ctime>
+#include <cstdlib>
 
 #include "Except.hpp"
 
@@ -19,8 +20,10 @@ private:
   bool to_file, to_console, is_debug;
 public:
   // Constructor Sets default log file...
-  Logger() : Logger("~/.webpp.log") {}
+  Logger() : Logger("/.webpp.log") {}
   Logger(std::string t_log_file_path){
+    const char* home_directory = std::getenv("HOME");
+    log_path = std::string(home_directory) + t_log_file_path;
     to_file = true;
     to_console = true;
     is_debug = true;
@@ -118,7 +121,7 @@ public:
     if(log_status == 0){ msg << ERR; } // ERROR
     else if(log_status == 1){ msg << WRN; } // WARNING
     else { msg << LOG; } // LOG
-    msg << formatted_time << ": " << message << std::endl;
+    msg << formatted_time << ": " << message;
     return msg;
   }
 
@@ -126,11 +129,10 @@ public:
     std::stringstream msg = gen_message(log_status, message);
 
     if(to_console){
-      std::cout << msg.str();
+      std::cout << msg.str() << std::endl;
     }
-
     if(to_file && log_file.is_open()){
-      log_file << msg.str();
+      log_file << msg.str() << std::endl;
     }
   }
 
