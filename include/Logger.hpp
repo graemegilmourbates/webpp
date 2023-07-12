@@ -123,7 +123,7 @@ public:
   }
 
   void log(const int log_status, const char* &message){
-    std::stringstream msg = gen_message(1, message);
+    std::stringstream msg = gen_message(log_status, message);
 
     if(to_console){
       std::cout << msg.str();
