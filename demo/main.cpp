@@ -48,12 +48,22 @@ void json(RESPONDER &res, REQUEST &req, URL_PARAMETERS params){
 }
 
 int main(int argc, const char * argv[]) {
-  WEBPP::Server t(AF_INET6, SOCK_STREAM, 0, 80, /*INADDR_ANY*/ 5);
+  WEBPP::Server t;
   t.add_route("/favicon.ico", favicon);
   t.add_route("/user/", user_form);
   t.add_route("/user/:user_name", user_id);
   t.add_route("/json", json);
   t.add_route("/", home_page);
-  t.start();
+  if(argc == 1){
+    logger >> "No extra commands passed... Sever not deployed...";
+    t.start();
+  } else {
+    std::string arg = argv[1];
+    if(arg=="deploy"){
+      t.deploy();
+    } else {
+      t.start();
+    }
+  }
   return 0;
 }

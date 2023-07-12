@@ -5,8 +5,7 @@
 #include <vector>
 #include <string>
 #include <unordered_map>
-#include <thread>
-// #include <libexplain/accept.h>
+#include <unistd.h>
 
 #include "webpp.hpp"
 
@@ -36,7 +35,10 @@ namespace WEBPP{
       // u_long interface, // Address to bind to.
       int backlog
     );
+    Server():
+      Server(AF_INET6, SOCK_STREAM, 0, 80, 5){};
     void start();
+    void deploy();
     void add_route(std::string route, ROUTE_HANDLER*);
     // ACCESS FUNCTIONS
     BindingSocket *get_socket();

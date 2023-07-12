@@ -29,7 +29,6 @@ public:
     is_debug = true;
     openLogFile();
   }
-
   // Copy constructor
   Logger(const Logger& other){
     this->log_path = other.log_path;
@@ -75,6 +74,12 @@ public:
     }
   }
 
+  // Set to console status
+  void print(bool should_print_to_console){
+    to_console = should_print_to_console;
+  }
+
+
   // Set debug state
   void debug(bool t_state){
     is_debug = t_state;
@@ -93,7 +98,7 @@ public:
       if(!log_file.is_open()){
         throw FailedLogFileOpen();
       }
-      log_file << "=== Log Started: " << get_time() << " ===" << std::endl;
+      log_file << "\n=== Log Started: " << get_time() << " ===" << std::endl;
     }
     // If log file fails to open... Print to console or exit;
     catch(FailedLogFileOpen flfo){
@@ -109,7 +114,7 @@ public:
 
   void closeLogFile(){
     if(log_file.is_open()){
-      log_file << "=== Log Ended: " << get_time() << " ===" << std::endl;
+      // log_file << "=== Log Ended: " << get_time() << " ===" << std::endl;
       log_file.close();
     }
   }
@@ -118,10 +123,11 @@ public:
   std::stringstream gen_message(const int log_status, const char* &message){
     std::string formatted_time = get_time();
     std::stringstream msg;
+    msg << formatted_time;
     if(log_status == 0){ msg << ERR; } // ERROR
     else if(log_status == 1){ msg << WRN; } // WARNING
     else { msg << LOG; } // LOG
-    msg << formatted_time << ": " << message;
+    msg << message;
     return msg;
   }
 

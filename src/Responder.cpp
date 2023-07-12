@@ -70,12 +70,12 @@ void WEBPP::Responder::send_file(
 }
 
 void WEBPP::Responder::send_html(const char *t_html){
-    set_response_header("HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n");
+    set_response_header(strdup("HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n"));
     send_response(t_html);
 }
 
 void WEBPP::Responder::send_json(const char *t_json){
-    set_response_header("HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n");
+    set_response_header(strdup("HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n"));
     send_response(t_json);
 }
 

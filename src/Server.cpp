@@ -45,12 +45,60 @@ void WEBPP::Server::handle_client(int t_client){
 }
 
 void WEBPP::Server::start(){
-  std::vector<std::thread> client_threads;
+  int client_socket_fd, child_pid;
+  server_socket->activate();
   while(true){
-    int client_socket = accept_client();
-    client_threads.push_back(std::thread(
-      &Server::handle_client, this, client_socket
-    ));
+    client_socket_fd = accept_client();
+    try{
+      if((child_pid = fork()) < 0 ){
+        throw ForkSystemCallException();
+      }
+      else if(child_pid == 0){ // Child process
+        close(server_socket->get_sock()); // Close the original socket
+        handle_client(client_socket_fd); // Handle the request
+        exit(0);
+      }
+      close(client_socket_fd); // Parent;
+    }
+    catch(ForkSystemCallException fsce){
+      logger << fsce.what();
+      exit(EXIT_FAILURE);
+    }
+  }
+}
+
+void WEBPP::Server::deploy(){
+  logger >> "Deploying Server...";
+  logger.print(false);
+  int daemon_pid;
+  daemon_pid = fork(); // Fork off parent..
+  try{
+    if(daemon_pid < 0 ){
+      throw ForkSystemCallException();
+    }
+    if(daemon_pid > 0){ // Child process success...
+      logger >> ("server pid: " + std::to_string(daemon_pid)).c_str();
+      logger.print(false);
+      exit(EXIT_SUCCESS); // Termintate parent process...
+    }
+    if(setsid() < 0){ // Make daemon session leader
+      logger << "failed to make daemon session leader";
+      exit(EXIT_FAILURE);
+    }
+    // TODO: SIGNAL HANDLING...
+    // daemon_pid = fork();
+    // if(daemon_pid < 0 ){
+    //   throw ForkSystemCallException();
+    // }
+    // if(daemon_pid > 0){ // Child process success...
+    //   logger >> ("server pid: " + std::to_string(daemon_pid)).c_str();
+    //   exit(EXIT_SUCCESS); // Termintate parent process...
+    // }
+    start();
+  }
+  catch(ForkSystemCallException fsce){
+    logger << fsce.what();
+    exit(EXIT_FAILURE);
   }
 }
 

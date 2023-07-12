@@ -10,10 +10,6 @@ WEBPP::BindingSocket::BindingSocket(
   int bcklog
 ) : BaseSocket(domain, type, protocol, port /* interface */){
   backlog = bcklog;
-  int bound = connect_to_network(get_sock(), get_address());
-  check_connection(bound, strdup("bind error..."));
-  start_listening();
-  check_connection(get_listener(), strdup("listen error"));
 }
 
 // Binding call...
@@ -30,6 +26,14 @@ void WEBPP::BindingSocket::start_listening(){
   listener = listen(get_sock(), backlog);
   struct sockaddr_in6 addy = get_address();
   logger("Listening on :" + std::to_string(addy.sin6_port));
+}
+
+// Activate Socket, bind and listen
+void WEBPP::BindingSocket::activate(){
+  int bound = connect_to_network(get_sock(), get_address());
+  check_connection(bound, strdup("bind error..."));
+  start_listening();
+  check_connection(get_listener(), strdup("listen error"));
 }
 
 const int& WEBPP::BindingSocket::get_back_log(){
