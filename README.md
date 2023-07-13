@@ -18,30 +18,27 @@ There is a compile srcipt in the demo folder.
 ## Usage
 
 ```cpp
-#include <webpp.hpp>
+#include <WEBPP/webpp.hpp>
 
-// Use webpp to send static html files
-void home_page(RESPONDER res, REQUEST req, URL_PARAMETERS params){
-  res.send_file("index.html", "html");
+void home_page(RESPONDER &res, REQUEST &req, URL_PARAMETERS params){
+  res.send_file("pages/app.html", "html");
 }
 
-// One can also use route parameters:
-void url_param(RESPONDER res, REQUEST req, URL_PARAMETERS params){
-  std::string response;
-  response = "<html><body><h2>User:" + params["user_name"] + "</h2></body></html>";
-  res.send_html(response.c_str());
-}
-
-int main(){
-    WEBPP::Server t(AF_INET6, SOCK_STREAM, 0, 80, INADDR_ANY, 10);
-    t.add_route("/", home_page);
-    // Add routes with lambda signature...
-    t.add_route("/hello_world", []WEBPP::Responder responder, REQUEST req,  URL_PARAMETERS params)->void{
-        responder.send_html("<html><body><h1>Hello World</h1></body></html>");
-    });
-    // Define url parameters...
-    t.add_route("/user/:user_name", url_param);
-    return 0;
+int main(int argc, const char * argv[]) {
+  WEBPP::Server t;
+  t.add_route("/", home_page);
+  if(argc == 1){
+    logger >> "No extra commands passed... Sever not deployed...";
+    t.start();
+  } else {
+    std::string arg = argv[1];
+    if(arg=="deploy"){
+      t.deploy();
+    } else {
+      t.start();
+    }
+  }
+  return 0;
 }
 ```
 
