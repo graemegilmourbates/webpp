@@ -306,16 +306,20 @@ Server(
     <hr />
     <div class="row">
       <div class="col-lg-8">
-        <h2 id="router">Class: <a href="https://github.com/graemegilmourbates/webpp/blob/main/src/Router.cpp">Router</a></h2>
-        <p>The Router class handles routing and provides functionality for adding routes and handling requests.</p>
+        <h2 id="router">Class: <a href="https://github.com/graemegilmourbates/webpp/blob/main/src/Router.cpp">Route</a></h2>
+        <p>The Route class handles route templating.</p>
 
         <h3>Constructor</h3>
         <pre>
-          Route(std::string t_route);
+Route(std::string t_route);
         </pre>
 
         <h3>Public Methods</h3>
         <ul>
+          <li>
+            <code>std::vector<std::string> split_route(std::string &t_route)</code>
+            <p>- Splits a route template(by "/").</p>
+          </li>
           <li>
             <code>bool compare(std::string &amp;t_route)</code>
             <p>- Compares a real route against the route template.</p>
@@ -324,6 +328,18 @@ Server(
             <code>URL_PARAMETERS get_parameters(std::string &amp;t_route)</code>
             <p>- Returns the URL parameters extracted from the route.</p>
           </li>
+        </ul>
+
+        <h2>Class: <a href="https://github.com/graemegilmourbates/webpp/blob/main/src/Router.cpp">Router</a></h2>
+        <p>The Router class handles routing and provides functionality for adding routes and handling requests.</p>
+
+        <h3>Constructor</h3>
+        <pre>
+Router();
+        </pre>
+
+        <h3>Public Methods</h3>
+        <ul>
           <li>
             <code>void add_route(std::string t_route, ROUTE_HANDLER *t_handler)</code>
             <p>- Adds a route and its corresponding handler to the router.</p>
