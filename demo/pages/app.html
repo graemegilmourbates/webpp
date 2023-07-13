@@ -16,10 +16,7 @@
   </style>
 
   <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-
-  <!-- Bootstrap JS -->
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 </head>
 <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
@@ -59,260 +56,342 @@
     </div>
     <br />
     <br />
+    <div class="row">
+      <div class="col-lg-8">
+        <h2 class="display-5"><small>What is a socket?</small></h2>
+        <p class="lead">A socket allows programs to establish communication and exchange data with one another over a network.
+          For Unix based systems such as Linux and OSX, almost everything is a file (like everything).
+          A socket serves as a gateway for inter-process communication.
+          In the short of it, a connection is established with physical hardware(ethernet, wifi...),
+          the signals across those connections are written to a file.
+          The socket system calls allow one to interact with these low level communications.
+          The variable name socket_fd or something similar may come up, the fd stands for
+          file descriptor. A file descriptor is an integer that the operating system uses to map
+          to a file that has been opened for I/O.
+        </p>
+      </div>
+    </div>
+    <br />
     <h1>Web++ Documentation</h1>
     <hr>
+    <div class="row">
+      <div class="col-lg-8">
+        <h2 id="base-socket">Class: <a href="https://github.com/graemegilmourbates/webpp/blob/main/src/BaseSocket.cpp">BaseSocket</a></h2>
+        <p>
+          The BaseSocket class provides a basic socket implementation. A great
+          resource for some basic socket information can be found <a href="https://pubs.opengroup.org/onlinepubs/7908799/xns/syssocket.h.html">here</a>.
+        </p>
 
-    <h2 id="base-socket">Class: <a href="https://github.com/graemegilmourbates/webpp/blob/main/src/BaseSocket.cpp">BaseSocket</a></h2>
-    <p>The BaseSocket class provides a basic socket implementation.</p>
-
-    <h3>Constructor</h3>
-    <pre>
+        <h3>Constructor</h3>
+        <pre>
       BaseSocket(
-        int domain,     // AF_UNIX for local, AF_INET for internet domain
-        int type,       // SOCK_STREAM, SOCK_DGRAM or SOCK_SEQPACKET
-        int protocol,   // Standard is 0
-        int port        // Desired PORT ex 80
+          int domain,     // See below...
+          int type,       // See below...
+          int protocol,   // Standard is 0
+          int port        // Desired PORT ex 80
       );
-    </pre>
+        </pre>
 
-    <h3>Member Variables</h3>
-    <ul>
-      <li><code>int domain</code> - The socket domain.</li>
-      <li><code>int type</code> - The socket type.</li>
-      <li><code>int protocol</code> - The socket protocol.</li>
-      <li><code>int port</code> - The desired port number.</li>
-    </ul>
+        <h3>Member Variables</h3>
+        <ul>
+          <li><code>int domain</code> - The socket domain.</li>
+          <li><code>int type</code> - The socket type.</li>
+          <li><code>int protocol</code> - The socket protocol.</li>
+          <li><code>int port</code> - The desired port number.</li>
+        </ul>
 
-    <h3>Public Methods</h3>
-    <ul>
-      <li>
-        <code>int connect_to_network(int t_sck, struct sockaddr_in6 t_addr)</code>
-        <p>- Virtual function that needs to be fulfilled by child class. Connects to the network.</p>
-      </li>
-      <li>
-        <code>void check_connection(int t_socket_fd, char* err_msg)</code>
-        <p>- Checks the socket connection.</p>
-      </li>
-      <li>
-        <code>const struct sockaddr_in6&amp; get_address()</code>
-        <p> - Access function... Returns the address of the socket.</p>
-      </li>
-      <li>
-        <code>const int&amp; get_sock()</code>
-        <p> - Access function.. Returns the socket file descriptor.</p>
-      </li>
-    </ul>
+        <h6>Here the domain can accept macros for the following:</h6>
+        <small>*There are others I am ignoring here</small>
+        <ul>
+          <li><pre>AF_UNIX: For Unix internal protocols</pre></li>
+          <li><pre>AF_INET: For Internet Protocols</pre></li>
+        </ul>
+        <h6>And the socket types:</h6>
+        <small>*There are others I am ignoring here</small>
+        <ul>
+          <li><pre>SOCK_STREAM: For a stream socket(TCP uses this)</pre></li>
+          <li><pre>SOCK_DGRAM: Datagram socket(unreliable but wicked quick)</pre></li>
+          <li><pre>SOCK_RAW: Raw Socket</pre></li>
+          <li><pre>SOCK_SEQPACKET: Sequenced Packet Socket</pre></li>
+          <li><pre>SOCK_RDM: Reliably delivered message socket</pre></li>
+        </ul>
+        <h6>Not all combinations of domains(or family) and type are valid:</h6>
+        <div class="table-responsive">
+          <table class="table align-middle caption-top">
+            <caption>Domain and Type Combinations</caption>
+            <thead>
+              <tr>
+                <th></th>
+                <th>AF_UNIX</th>
+                <th>AF_INET</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>SOCK_STREAM</td>
+                <td>YES</td>
+                <td>TCP</td>
+              </tr>
+              <tr>
+                <td>SOCK_DGRAM</td>
+                <td>YES</td>
+                <td>UDP</td>
+              </tr>
+              <tr>
+                <td>SOCK_RAW</td>
+                <td></td>
+                <td>IP</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Public Methods</h3>
+        <ul>
+          <li>
+            <code>int connect_to_network(int t_sck, struct sockaddr_in6 t_addr)</code>
+            <p>- Virtual function that needs to be fulfilled by child class. Connects to the network.</p>
+          </li>
+          <li>
+            <code>void check_connection(int t_socket_fd, char* err_msg)</code>
+            <p>- Checks the socket connection.</p>
+          </li>
+          <li>
+            <code>const struct sockaddr_in6&amp; get_address()</code>
+            <p> - Access function... Returns the address of the socket.</p>
+          </li>
+          <li>
+            <code>const int&amp; get_sock()</code>
+            <p> - Access function.. Returns the socket file descriptor.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <hr />
+    <div class="row">
+      <div class="col-lg-8">
+        <h2 id="binding-socket">Class: <a href="https://github.com/graemegilmourbates/webpp/blob/main/src/BindingSocket.cpp">BindingSocket</a></h2>
+        <p>The BindingSocket class extends the BaseSocket class and provides functionality for binding and listening to a socket.</p>
 
-    <h2 id="binding-socket">Class: <a href="https://github.com/graemegilmourbates/webpp/blob/main/src/BindingSocket.cpp">BindingSocket</a></h2>
-    <p>The BindingSocket class extends the BaseSocket class and provides functionality for binding and listening to a socket.</p>
-
-    <h3>Constructor</h3>
-    <pre>
+        <h3>Constructor</h3>
+        <pre>
       BindingSocket(
-        int domain,     // AF_UNIX for local communication, AF_INET for internet domain
-        int type,       // SOCK_STREAM, SOCK_DGRAM or SOCK_SEQPACKET
-        int protocol,   // Standard is 0
-        int port,       // Desired PORT ex 80
-        int backlog     // Number of pending connections in the backlog 5 default
+          int domain,     // See above...
+          int type,       // See above...
+          int protocol,   // Standard is 0
+          int port,       // Desired PORT ex 80
+          int backlog     // Number of pending connections in the backlog 5 default
       );
-    </pre>
+        </pre>
 
-    <h3>Member Variables</h3>
-    <ul>
-      <li><code>int domain</code> - The socket domain.</li>
-      <li><code>int type</code> - The socket type.</li>
-      <li><code>int protocol</code> - The socket protocol.</li>
-      <li><code>int port</code> - The desired port number.</li>
-      <li><code>int backlog</code> - The number of pending connections in the backlog.</li>
-    </ul>
+        <h3>Member Variables</h3>
+        <ul>
+          <li><code>int domain</code> - The socket domain.</li>
+          <li><code>int type</code> - The socket type.</li>
+          <li><code>int protocol</code> - The socket protocol.</li>
+          <li><code>int port</code> - The desired port number.</li>
+          <li><code>int backlog</code> - The number of pending connections in the backlog.</li>
+        </ul>
 
-    <h3>Public Methods</h3>
-    <ul>
-      <li>
-        <code>int connect_to_network(int t_socket_fd, struct sockaddr_in6 t_address)</code>
-        <p>- Overrides the base class method. Connects the BindingSocket to the network.</p>
-      </li>
-      <li>
-        <code>void start_listening()</code>
-        <p>- Starts listening on the BindingSocket.</p>
-      </li>
-      <li>
-        <code>void activate()</code>
-        <p>- Activates the BindingSocket for incoming connections.</p>
-      </li>
-      <li>
-        <code>const int&amp; get_back_log()</code>
-        <p>- Returns the backlog value.</p>
-      </li>
-      <li>
-        <code>const int&amp; get_listener()</code>
-        <p>- Returns the listener file descriptor.</p>
-      </li>
-    </ul>
+        <h3>Public Methods</h3>
+        <ul>
+          <li>
+            <code>int connect_to_network(int t_socket_fd, struct sockaddr_in6 t_address)</code>
+            <p>- Overrides the base class method. Connects the BindingSocket to the network.</p>
+          </li>
+          <li>
+            <code>void start_listening()</code>
+            <p>- Starts listening on the BindingSocket.</p>
+          </li>
+          <li>
+            <code>void activate()</code>
+            <p>- Activates the BindingSocket for incoming connections.</p>
+          </li>
+          <li>
+            <code>const int&amp; get_back_log()</code>
+            <p>- Returns the backlog value.</p>
+          </li>
+          <li>
+            <code>const int&amp; get_listener()</code>
+            <p>- Returns the listener file descriptor.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <hr />
+    <div class="row">
+      <div class="col-lg-8">
+        <h2 id="server">Class: <a href="https://github.com/graemegilmourbates/webpp/blob/main/src/Server.cpp">Server</a></h2>
+        <p>The Server class provides functionality for handling server operations.</p>
 
-    <h2 id="server">Class: <a href="https://github.com/graemegilmourbates/webpp/blob/main/src/Server.cpp">Server</a></h2>
-    <p>The Server class provides functionality for handling server operations.</p>
-
-    <h3>Constructor</h3>
-    <pre>
+        <h3>Constructor</h3>
+        <pre>
       Server(
-        int domain,       // AF_UNIX for local communication, AF_INET for internet domain
-        int type,         // SOCK_STREAM, SOCK_DGRAM or SOCK_SEQPACKET (SOCK_STREAM is norm)
-        int protocol,     // Standard is 0
-        int port,         // Desired PORT ex 80
-        int backlog       // Number of pending connections in the backlog
+          int domain,       // AF_UNIX for local communication, AF_INET for internet domain
+          int type,         // SOCK_STREAM, SOCK_DGRAM or SOCK_SEQPACKET (SOCK_STREAM is norm)
+          int protocol,     // Standard is 0
+          int port,         // Desired PORT ex 80
+          int backlog       // Number of pending connections in the backlog
       );
-    </pre>
+        </pre>
 
-    <h3>Member Variables</h3>
-    <ul>
-      <li><code>int domain</code> - The socket domain.</li>
-      <li><code>int type</code> - The socket type.</li>
-      <li><code>int protocol</code> - The socket protocol.</li>
-      <li><code>int port</code> - The desired port number.</li>
-      <li><code>int backlog</code> - The number of pending connections in the backlog.</li>
-    </ul>
+        <h3>Member Variables</h3>
+        <ul>
+          <li><code>int domain</code> - The socket domain.</li>
+          <li><code>int type</code> - The socket type.</li>
+          <li><code>int protocol</code> - The socket protocol.</li>
+          <li><code>int port</code> - The desired port number.</li>
+          <li><code>int backlog</code> - The number of pending connections in the backlog.</li>
+        </ul>
 
-    <h3>Public Methods</h3>
-    <ul>
-      <li>
-        <code>void start()</code>
-        <p>- Starts the server.</p>
-      </li>
-      <li>
-        <code>void deploy()</code>
-        <p>- Deploys the server.<br>This turns the server into a daemon process and turns console printing off.</p>
-      </li>
-      <li>
-        <code>void add_route(std::string route, ROUTE_HANDLER*)</code>
-        <p>- Adds a route to the server.</p>
-      </li>
-      <li>
-        <code>BindingSocket *get_socket()</code>
-        <p>- Returns the server socket.</p>
-      </li>
-    </ul>
+        <h3>Public Methods</h3>
+        <ul>
+          <li>
+            <code>void start()</code>
+            <p>- Starts the server.</p>
+          </li>
+          <li>
+            <code>void deploy()</code>
+            <p>- Deploys the server.<br>This turns the server into a daemon process and turns console printing off.</p>
+          </li>
+          <li>
+            <code>void add_route(std::string route, ROUTE_HANDLER*)</code>
+            <p>- Adds a route to the server.</p>
+          </li>
+          <li>
+            <code>BindingSocket *get_socket()</code>
+            <p>- Returns the server socket.</p>
+          </li>
+        </ul>
 
-    <h3>Private Methods</h3>
-    <ul>
-      <li>
-        <code>int accept_client()</code>
-        <p>- Accepts a client connection.</p>
-      </li>
-      <li>
-        <code>void handle_client(int t_client)</code>
-        <p>- Handles a client connection.</p>
-      </li>
-    </ul>
+        <h3>Private Methods</h3>
+        <ul>
+          <li>
+            <code>int accept_client()</code>
+            <p>- Accepts a client connection.</p>
+          </li>
+          <li>
+            <code>void handle_client(int t_client)</code>
+            <p>- Handles a client connection.</p>
+          </li>
+        </ul>
 
-    <h3>Type Definitions</h3>
-    <ul>
-      <li>
-        <code>URL_PARAMETERS</code>
-        <p>- Type alias for an unordered map of URL parameters.</p>
-      </li>
-      <li>
-        <code>ROUTE_HANDLER</code>
-        <p>- Type alias for the route handler function signature.</p>
-      </li>
-      <li>
-        <code>REQUEST</code>
-        <p>- Type alias for an unordered map of request parameters.</p>
-      </li>
-    </ul>
+        <h3>Type Definitions</h3>
+        <ul>
+          <li>
+            <code>URL_PARAMETERS</code>
+            <p>- Type alias for an unordered map of URL parameters.</p>
+          </li>
+          <li>
+            <code>ROUTE_HANDLER</code>
+            <p>- Type alias for the route handler function signature.</p>
+          </li>
+          <li>
+            <code>REQUEST</code>
+            <p>- Type alias for an unordered map of request parameters.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <hr />
+    <div class="row">
+      <div class="col-lg-8">
+        <h2 id="router">Class: <a href="https://github.com/graemegilmourbates/webpp/blob/main/src/Router.cpp">Router</a></h2>
+        <p>The Router class handles routing and provides functionality for adding routes and handling requests.</p>
 
-    <h2 id="router">Class: <a href="https://github.com/graemegilmourbates/webpp/blob/main/src/Router.cpp">Router</a></h2>
-    <p>The Router class handles routing and provides functionality for adding routes and handling requests.</p>
+        <h3>Constructor</h3>
+        <pre>
+          Route(std::string t_route);
+        </pre>
 
-    <h3>Constructor</h3>
-    <pre>
-      Route(std::string t_route);
-    </pre>
+        <h3>Public Methods</h3>
+        <ul>
+          <li>
+            <code>bool compare(std::string &amp;t_route)</code>
+            <p>- Compares a real route against the route template.</p>
+          </li>
+          <li>
+            <code>URL_PARAMETERS get_parameters(std::string &amp;t_route)</code>
+            <p>- Returns the URL parameters extracted from the route.</p>
+          </li>
+          <li>
+            <code>void add_route(std::string t_route, ROUTE_HANDLER *t_handler)</code>
+            <p>- Adds a route and its corresponding handler to the router.</p>
+          </li>
+          <li>
+            <code>void handle_request(WEBPP::Responder t_responder, REQUEST &amp;t_request)</code>
+            <p>- Handles a request by matching the route and invoking the appropriate handler.</p>
+          </li>
+        </ul>
 
-    <h3>Public Methods</h3>
-    <ul>
-      <li>
-        <code>bool compare(std::string &amp;t_route)</code>
-        <p>- Compares a real route against the route template.</p>
-      </li>
-      <li>
-        <code>URL_PARAMETERS get_parameters(std::string &amp;t_route)</code>
-        <p>- Returns the URL parameters extracted from the route.</p>
-      </li>
-      <li>
-        <code>void add_route(std::string t_route, ROUTE_HANDLER *t_handler)</code>
-        <p>- Adds a route and its corresponding handler to the router.</p>
-      </li>
-      <li>
-        <code>void handle_request(WEBPP::Responder t_responder, REQUEST &amp;t_request)</code>
-        <p>- Handles a request by matching the route and invoking the appropriate handler.</p>
-      </li>
-    </ul>
+        <h3>Type Definitions</h3>
+        <ul>
+          <li>
+            <code>URL_PARAMETERS</code>
+            <p>- Type alias for an unordered map of URL parameters.</p>
+          </li>
+          <li>
+            <code>URL_PARAMETER</code>
+            <p>- Type alias for a pair of an integer (location) and a string (parameter value).</p>
+          </li>
+          <li>
+            <code>ROUTE_HANDLER</code>
+            <p>- Type alias for the route handler function signature.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <hr />
+    <div class="row">
+      <div class="col-lg-8">
+        <h2 id="responder">Class: <a href="https://github.com/graemegilmourbates/webpp/blob/main/src/Responder.cpp">Responder</a></h2>
+        <p>The Responder class provides functionality for sending responses to clients.</p>
 
-    <h3>Type Definitions</h3>
-    <ul>
-      <li>
-        <code>URL_PARAMETERS</code>
-        <p>- Type alias for an unordered map of URL parameters.</p>
-      </li>
-      <li>
-        <code>URL_PARAMETER</code>
-        <p>- Type alias for a pair of an integer (location) and a string (parameter value).</p>
-      </li>
-      <li>
-        <code>ROUTE_HANDLER</code>
-        <p>- Type alias for the route handler function signature.</p>
-      </li>
-    </ul>
+        <h3>Constructor</h3>
+        <pre>
+          Responder(int t_client);
+        </pre>
 
-    <h2 id="responder">Class: <a href="https://github.com/graemegilmourbates/webpp/blob/main/src/Responder.cpp">Responder</a></h2>
-    <p>The Responder class provides functionality for sending responses to clients.</p>
-
-    <h3>Constructor</h3>
-    <pre>
-      Responder(int t_client);
-    </pre>
-
-    <h3>Public Methods</h3>
-    <ul>
-      <li>
-        <code>void send_html(const char *t_html)</code>
-        <p>- Sends an HTML response to the client.</p>
-      </li>
-      <li>
-        <code>void send_json(const char *t_json)</code>
-        <p>- Sends a JSON response to the client.</p>
-      </li>
-      <li>
-        <code>void send_file(std::string t_file_path, std::string t_file_type)</code>
-        <p>- Sends a file response to the client.</p>
-      </li>
-      <li>
-        <code>void send_image(std::string t_image_path)</code>
-        <p>- Sends an image response to the client.</p>
-      </li>
-      <li>
-        <code>void send_video(std::string t_image_path)</code>
-        <p>- Sends a video response to the client.</p>
-      </li>
-      <li>
-        <code>void send_audio(std::string t_image_path)</code>
-        <p>- Sends an audio response to the client.</p>
-      </li>
-    </ul>
-
-    <h3>Private Methods</h3>
-    <ul>
-      <li>
-        <code>void set_response_header(char *t_header)</code>
-        <p>- Sets the response header.</p>
-      </li>
-      <li>
-        <code>void send_response(const char *t_response)</code>
-        <p>- Sends the response to the client.</p>
-      </li>
-    </ul>
+        <h3>Public Methods</h3>
+        <ul>
+          <li>
+            <code>void send_html(const char *t_html)</code>
+            <p>- Sends an HTML response to the client.</p>
+          </li>
+          <li>
+            <code>void send_json(const char *t_json)</code>
+            <p>- Sends a JSON response to the client.</p>
+          </li>
+          <li>
+            <code>void send_file(std::string t_file_path, std::string t_file_type)</code>
+            <p>- Sends a file response to the client.</p>
+          </li>
+          <li>
+            <code>void send_image(std::string t_image_path)</code>
+            <p>- Sends an image response to the client.</p>
+          </li>
+          <li>
+            <code>void send_video(std::string t_image_path)</code>
+            <p>- Sends a video response to the client.</p>
+          </li>
+          <li>
+            <code>void send_audio(std::string t_image_path)</code>
+            <p>- Sends an audio response to the client.</p>
+          </li>
+        </ul>
+        <h3>Private Methods</h3>
+        <ul>
+          <li>
+            <code>void set_response_header(char *t_header)</code>
+            <p>- Sets the response header.</p>
+          </li>
+          <li>
+            <code>void send_response(const char *t_response)</code>
+            <p>- Sends the response to the client.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 </body>
 </html>
