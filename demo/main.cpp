@@ -1,9 +1,4 @@
-#include <iostream>
-#include <unordered_map>
 #include <WEBPP/webpp.hpp>
-#include <stdlib.h>
-#include <string>
-#include <WEBPP/Templater.hpp>
 
 void home_page(RESPONDER &res, REQUEST &req, URL_PARAMETERS params){
   res.send_file("pages/app.html", "html");
