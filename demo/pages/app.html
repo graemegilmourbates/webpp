@@ -54,7 +54,9 @@
     <h2 class="display-5">Web Plus Plus: <small>Unix Network Programming Foundations</small></h2>
     <div class="row">
       <div class="col-lg-8">
-        <p class="lead">Web Plus Plus simplifies the essentials of network programming, providing a user-friendly resource for learning and mastering the foundational concepts. Expand your skills, build web servers, and join a vibrant community of developers in exploring the dynamic world of network programming.</p>
+        <p class="font-monospace">
+          &nbspWeb Plus Plus simplifies the essentials of network programming, providing a user-friendly resource for learning and mastering the foundational concepts. Expand your skills, build web servers, and join a vibrant community of developers in exploring the dynamic world of network programming.
+        </p>
       </div>
     </div>
     <br />
@@ -62,16 +64,21 @@
     <div class="row">
       <div class="col-lg-8">
         <h2 class="display-5"><small>What is a socket?</small></h2>
-        <p class="lead">A socket allows programs to establish communication and exchange data with one another over a network.
-          For Unix based systems such as Linux and OSX, almost everything is a file (like everything).
-          I/O data is just stored in a file like anything else.
-          A socket serves as a gateway for inter-process communication.
-          In the short of it, a connection is established with physical hardware(ethernet, wifi...),
-          the signals across those connections are written to a file.
-          The socket system calls allow one to interact with these low level communications.
-          The variable name socket_fd or something similar may come up, the fd stands for
-          file descriptor. A file descriptor is an integer that the operating system uses to map
-          to a file that has been opened for I/O.
+          <p class="font-monospace">
+            &nbspThink of it as a virtual channel, a means by which these programs can establish communication and exchange data.
+          </p>
+          <p class="font-monospace">
+            &nbspNow, let's focus on Unix-based systems like Linux and OSX. These operating systems treat nearly everything as a file. It's a concept that can take some getting used to, but it helps maintain consistency in how different resources are handled.
+            When it comes to sockets, they serve as the gatekeepers of inter-process communication. They enable programs to send messages to each other, regardless of their physical locations.
+          </p>
+          <p class="font-monospace">
+            &nbspThe messages traveling through the network are not just intangible data streams, they are written to special files. These files are handled by the operating system, and programmers can interact with them using specific functions called socket system calls.
+            A file descriptor(often fd) is a unique identifier, a numerical label that the operating system assigns to each open file or resource. Sockets are no exception!
+          </p>
+          <p class="font-monospace">
+            &nbspWhen a socket is created, it is associated with a file descriptor, which acts as a reference to that particular communication channel.
+            So, when you come across a variable named "socket_fd" or something similar, it's simply a way of referring to the file descriptor associated with a socket.
+            In essence, sockets are the backbone of communication between programs over a network. In the realm of Unix-based systems, sockets are treated as files, thanks to the uniformity of the operating system. Socket system calls provide the necessary functions to create and manage these communication channels, while file descriptors serve as the bridge between programs and their respective sockets.
         </p>
       </div>
     </div>
