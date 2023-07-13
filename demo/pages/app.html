@@ -97,10 +97,10 @@
 
         <h3>Member Variables</h3>
         <ul>
-          <li><code>int domain</code> - The socket domain.</li>
-          <li><code>int type</code> - The socket type.</li>
-          <li><code>int protocol</code> - The socket protocol.</li>
-          <li><code>int port</code> - The desired port number.</li>
+          <li><code>int domain</code></li>
+          <li><code>int type</code>.</li>
+          <li><code>int protocol</code></li>
+          <li><code>int port</code></li>
         </ul>
 
         <h6>Here the domain can accept macros for the following:</h6>
@@ -188,11 +188,11 @@
 
         <h3>Member Variables</h3>
         <ul>
-          <li><code>int domain</code> - The socket domain.</li>
-          <li><code>int type</code> - The socket type.</li>
-          <li><code>int protocol</code> - The socket protocol.</li>
-          <li><code>int port</code> - The desired port number.</li>
-          <li><code>int backlog</code> - The number of pending connections in the backlog.</li>
+          <li><code>int domain</code></li>
+          <li><code>int type</code></li>
+          <li><code>int protocol</code></li>
+          <li><code>int port</code></li>
+          <li><code>int backlog</code> - The number of allowed queued connections.</li>
         </ul>
 
         <h3>Public Methods</h3>
@@ -229,8 +229,8 @@
         <h3>Constructor</h3>
         <pre>
     Server(
-      int domain,       // AF_UNIX for local communication, AF_INET for internet domain
-      int type,         // SOCK_STREAM, SOCK_DGRAM or SOCK_SEQPACKET (SOCK_STREAM is norm)
+      int domain,       // See above...
+      int type,         // See above...
       int protocol,     // Standard is 0
       int port,         // Desired PORT ex 80
       int backlog       // Number of pending connections in the backlog
@@ -239,11 +239,11 @@
 
         <h3>Member Variables</h3>
         <ul>
-          <li><code>int domain</code> - The socket domain.</li>
-          <li><code>int type</code> - The socket type.</li>
-          <li><code>int protocol</code> - The socket protocol.</li>
-          <li><code>int port</code> - The desired port number.</li>
-          <li><code>int backlog</code> - The number of pending connections in the backlog.</li>
+          <li><code>int domain</code></li>
+          <li><code>int type</code></li>
+          <li><code>int protocol</code></li>
+          <li><code>int port</code></li>
+          <li><code>int backlog</code></li>
         </ul>
 
         <h3>Public Methods</h3>
