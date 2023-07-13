@@ -42,6 +42,9 @@
           <li class="nav-item">
             <a class="nav-link" aria-current="page" href="#responder">Responder</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="https://github.com/graemegilmourbates/webpp">GIT</a>
+          </li>
         </ul>
       </div>
     </div>
@@ -84,12 +87,12 @@
 
         <h3>Constructor</h3>
         <pre>
-      BaseSocket(
-          int domain,     // See below...
-          int type,       // See below...
-          int protocol,   // Standard is 0
-          int port        // Desired PORT ex 80
-      );
+    BaseSocket(
+      int domain,     // See below...
+      int type,       // See below...
+      int protocol,   // Standard is 0
+      int port        // Desired PORT ex 80
+    );
         </pre>
 
         <h3>Member Variables</h3>
@@ -174,13 +177,13 @@
 
         <h3>Constructor</h3>
         <pre>
-      BindingSocket(
-          int domain,     // See above...
-          int type,       // See above...
-          int protocol,   // Standard is 0
-          int port,       // Desired PORT ex 80
-          int backlog     // Number of pending connections in the backlog 5 default
-      );
+    BindingSocket(
+      int domain,     // See above...
+      int type,       // See above...
+      int protocol,   // Standard is 0
+      int port,       // Desired PORT ex 80
+      int backlog     // Number of pending connections in the backlog 5 default
+    );
         </pre>
 
         <h3>Member Variables</h3>
@@ -225,13 +228,13 @@
 
         <h3>Constructor</h3>
         <pre>
-      Server(
-          int domain,       // AF_UNIX for local communication, AF_INET for internet domain
-          int type,         // SOCK_STREAM, SOCK_DGRAM or SOCK_SEQPACKET (SOCK_STREAM is norm)
-          int protocol,     // Standard is 0
-          int port,         // Desired PORT ex 80
-          int backlog       // Number of pending connections in the backlog
-      );
+    Server(
+      int domain,       // AF_UNIX for local communication, AF_INET for internet domain
+      int type,         // SOCK_STREAM, SOCK_DGRAM or SOCK_SEQPACKET (SOCK_STREAM is norm)
+      int protocol,     // Standard is 0
+      int port,         // Desired PORT ex 80
+      int backlog       // Number of pending connections in the backlog
+    );
         </pre>
 
         <h3>Member Variables</h3>
