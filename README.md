@@ -48,9 +48,8 @@ int main(){
 
 ## Contributing
 
-Pull requests are welcome. For major changes, please open an issue first
-to discuss what you would like to change.
-If anyone would like to contribute or has suggestions let me know. I can be reached at graeme.gilmour.bates@gmail.com
+Pull requests are welcome. Please open issues
+to discuss any features you would like to change, or see added. If anyone would like to contribute or has suggestions let me know. I can be reached at graeme.gilmour.bates@gmail.com
 
 ## License
 
