@@ -24,6 +24,7 @@ int WEBPP::Server::accept_client(){
   );
   try{
     if(client_socket_fd < 0){
+      logger >> "server: accept error";
       throw SocketSystemCallException(strdup("accept error"));
     }
   }
@@ -51,6 +52,7 @@ void WEBPP::Server::start(){
     client_socket_fd = accept_client();
     try{
       if((child_pid = fork()) < 0 ){
+        logger << "server: fork error.";
         throw ForkSystemCallException();
       }
       else if(child_pid == 0){ // Child process
@@ -70,7 +72,7 @@ void WEBPP::Server::start(){
 void WEBPP::Server::deploy(){
   logger >> "Deploying Server...";
   logger.print(false);
-  int daemon_pid;
+  int daemon_pid, child_pid, client_fd;
   daemon_pid = fork(); // Fork off parent..
   try{
     if(daemon_pid < 0 ){
@@ -86,14 +88,6 @@ void WEBPP::Server::deploy(){
       exit(EXIT_FAILURE);
     }
     // TODO: SIGNAL HANDLING...
-    // daemon_pid = fork();
-    // if(daemon_pid < 0 ){
-    //   throw ForkSystemCallException();
-    // }
-    // if(daemon_pid > 0){ // Child process success...
-    //   logger >> ("server pid: " + std::to_string(daemon_pid)).c_str();
-    //   exit(EXIT_SUCCESS); // Termintate parent process...
-    // }
     start();
   }
   catch(ForkSystemCallException fsce){
