@@ -12,11 +12,13 @@ WEBPP::Server::Server(
   server_socket = new BindingSocket(
     domain, type, protocol, port, /* interface, */ backlog
   );
+  server_instance = this;
+  shouldRun = true;
 }
 
 int WEBPP::Server::accept_client(){
   struct sockaddr_in6 client_address;
-  socklen_t client_address_length;
+  socklen_t client_address_length = sizeof(client_address);
   int client_socket_fd = accept(
     get_socket()->get_sock(),
     (struct sockaddr *)&client_address,
@@ -45,28 +47,52 @@ void WEBPP::Server::handle_client(int t_client){
   router->handle_request(responder, parsed_request);
 }
 
+void WEBPP::Server::sig_term(int signal){
+  server_instance->handle_termination_sig(signal);
+}
+
+void WEBPP::Server::sig(int signal){
+  server_instance->handle_signal(signal);
+}
+
+void WEBPP::Server::handle_termination_sig(int signal){
+  logger << "server: recieved termination signal...";
+  shouldRun = false;
+  // Handle clean up...
+  server_socket->deactivate();
+  delete server_socket;
+  logger >> "Server deactive";
+  exit(EXIT_SUCCESS);
+}
+
+void WEBPP::Server::handle_signal(int signal){
+  logger << ("server: recieved signal: " + std::to_string(signal));
+}
+
+void WEBPP::Server::accept_connections(std::mutex& mutex){
+  int client_socket_fd;
+  while(shouldRun){
+    if((client_socket_fd = accept_client()) < 0){
+      std::unique_lock<std::mutex> lock(mutex);
+      logger << "Error accepting client";
+      lock.unlock();
+    }
+    std::thread(&Server::handle_client, this, client_socket_fd).detach();
+  }
+}
+
 void WEBPP::Server::start(){
   int client_socket_fd, child_pid;
+  std::mutex mutex;
   server_socket->activate();
-  while(true){
-    client_socket_fd = accept_client();
-    try{
-      if((child_pid = fork()) < 0 ){
-        logger << "server: fork error.";
-        throw ForkSystemCallException();
-      }
-      else if(child_pid == 0){ // Child process
-        close(server_socket->get_sock()); // Close the original socket
-        handle_client(client_socket_fd); // Handle the request
-        exit(0);
-      }
-      close(client_socket_fd); // Parent;
-    }
-    catch(ForkSystemCallException fsce){
-      logger << fsce.what();
-      exit(EXIT_FAILURE);
-    }
-  }
+
+  // Register signals
+  signal(SIGTERM, &Server::sig_term);
+  signal(SIGINT, &Server::sig_term);
+
+  // Create thread to accept clients
+  std::thread accepting_thread(&Server::accept_connections, this, std::ref(mutex));
+  accepting_thread.join();
 }
 
 void WEBPP::Server::deploy(){
@@ -87,7 +113,8 @@ void WEBPP::Server::deploy(){
       logger << "failed to make daemon session leader";
       exit(EXIT_FAILURE);
     }
-    // TODO: SIGNAL HANDLING...
+
+    // Start server
     start();
   }
   catch(ForkSystemCallException fsce){

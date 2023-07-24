@@ -5,6 +5,7 @@
 #include <sys/types.h>
 #include "Logger.hpp"
 #include "BaseSocket.hpp"
+#include <unistd.h>
 
 
 namespace WEBPP{
@@ -24,6 +25,7 @@ namespace WEBPP{
     int connect_to_network(int t_socket_fd, struct sockaddr_in6 t_address);
     void start_listening();
     void activate();
+    void deactivate();
     // Access functions: get private member values without direct Access
     const int& get_back_log();
     const int& get_listener();

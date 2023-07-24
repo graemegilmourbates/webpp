@@ -36,6 +36,10 @@ void WEBPP::BindingSocket::activate(){
   check_connection(get_listener(), strdup("listen error"));
 }
 
+void WEBPP::BindingSocket::deactivate(){
+  close(get_sock());
+}
+
 const int& WEBPP::BindingSocket::get_back_log(){
   return backlog;
 }

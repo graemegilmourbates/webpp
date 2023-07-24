@@ -5,9 +5,14 @@
 #include <vector>
 #include <string>
 #include <unordered_map>
+#include <thread>
+#include <queue>
+#include <mutex>
 #include <unistd.h>
-
+#include <signal.h>
 #include "webpp.hpp"
+
+const int MAX_THREADS = 5; // Max number of threads to handle clients
 
 using URL_PARAMETERS = std::unordered_map<std::string, std::string>;
 using ROUTE_HANDLER = void(
@@ -24,8 +29,15 @@ namespace WEBPP{
     BindingSocket *server_socket;
     int accept_client();
     void handle_client(int t_client);
+    static Server* server_instance;
+    static void sig_term(int signal);
+    static void sig(int signal);
+    void handle_termination_sig(int signal);
+    void handle_signal(int signal);
+    void accept_connections(std::mutex& mutex);
     std::unordered_map<std::string, ROUTE_HANDLER*> routes;
     Router *router;
+    bool shouldRun;
   public:
     Server(
       int domain, // AF_UNIX for local communication, AF_INET for internet domain
@@ -43,6 +55,6 @@ namespace WEBPP{
     // ACCESS FUNCTIONS
     BindingSocket *get_socket();
   };
+  Server* Server::server_instance = nullptr;
 }
-
 #endif // SERVER_HPP
